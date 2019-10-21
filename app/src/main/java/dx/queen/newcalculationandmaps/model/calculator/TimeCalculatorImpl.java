@@ -11,11 +11,13 @@ public class TimeCalculatorImpl implements TimeCalculator {
     public void execAndSetupTime(TaskData td) {
         switch (td.getTag()) {
             case Tags.ADD_TO_START_ARRAY_LIST: {
+                final long start = System.nanoTime();
                 addToStartList(td.collection);
+                td.setTime((System.nanoTime() - start) / 1000D);
             }
             break;
 
-            // TODO ksenia: fill
+            // TODO: fill + measure time
         }
     }
 

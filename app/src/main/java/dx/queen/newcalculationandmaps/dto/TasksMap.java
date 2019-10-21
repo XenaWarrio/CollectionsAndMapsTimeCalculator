@@ -1,10 +1,11 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.dto;
+package dx.queen.newcalculationandmaps.dto;
 
 import android.util.Log;
 
 import java.util.HashMap;
 import java.util.TreeMap;
 
+@Deprecated
 public class TasksMap implements Runnable {
 
     TreeMap<Integer, Integer> treemap;

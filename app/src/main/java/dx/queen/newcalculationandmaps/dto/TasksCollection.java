@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.dto;
+package dx.queen.newcalculationandmaps.dto;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Deprecated
 public class TasksCollection implements Runnable {
     ArrayList<Integer> arrayList;
     LinkedList<Integer> linkedList;
@@ -17,10 +18,12 @@ public class TasksCollection implements Runnable {
         this.num = num;
         this.arrayList = arrayList;
     }
+
     public TasksCollection(LinkedList<Integer> linkedList, int num) {
         this.num = num;
         this.linkedList = linkedList;
     }
+
     public TasksCollection(CopyOnWriteArrayList<Integer> copyOnWriteArrayList, int num) {
         this.num = num;
         this.copyOnWriteArrayList = copyOnWriteArrayList;
@@ -71,70 +74,70 @@ public class TasksCollection implements Runnable {
                     Log.d("RRR", "case7");
 
                     break;
-               case 8:
+                case 8:
                     addingStartLinkedList();
                     Log.d("RRR", "case8");
                     break;
-               case 9:
+                case 9:
                     addingMiddleLinkedList();
                     Log.d("RRR", "case9");
                     break;
-               case 10:
+                case 10:
                     addingEndLinkedList();
                     Log.d("RRR", "case10");
 
                     break;
-               case 11:
+                case 11:
                     removeStartLinkedList();
                     Log.d("RRR", "cas11");
 
                     break;
-               case 12:
+                case 12:
                     removeMiddleLinkedList();
                     Log.d("RRR", "case12");
 
                     break;
-               case 13:
+                case 13:
                     removeEndLinkedList();
                     Log.d("RRR", "case13");
 
                     break;
-               case 14:
+                case 14:
                     searchElementLinkedList();
                     Log.d("RRR", "case14");
 
                     break;
-               case 15:
+                case 15:
                     addingStartCopyOnWriteArrayList();
                     Log.d("RRR", "case15");
 
                     break;
-               case 16:
+                case 16:
                     addingMiddleCopyOnWriteArrayList();
                     Log.d("RRR", "case16");
 
                     break;
-               case 17:
+                case 17:
                     addingEndCopyOnWriteArrayList();
                     Log.d("RRR", "case17");
 
                     break;
-               case 18:
+                case 18:
                     removeStartCopyOnWriteArrayList();
                     Log.d("RRR", "case18");
 
                     break;
-               case 19:
-                   removeMiddleCopyOnWriteArrayList();
+                case 19:
+                    removeMiddleCopyOnWriteArrayList();
                     Log.d("RRR", "case19");
 
                     break;
-               case 20:
+                case 20:
                     removeEndCopyOnWriteArrayList();
                     Log.d("RRR", "case20");
 
                     break;
-               case 21:
+                case 21:
                     searchElementCopyOnWriteArrayList();
                     Log.d("RRR", "case21");
 
@@ -212,7 +215,7 @@ public class TasksCollection implements Runnable {
     }
 
     private void addingMiddleCopyOnWriteArrayList() {
-        copyOnWriteArrayList.add(copyOnWriteArrayList.size()/ 2, element);
+        copyOnWriteArrayList.add(copyOnWriteArrayList.size() / 2, element);
     }
 
     private void addingEndCopyOnWriteArrayList() {

@@ -1,9 +1,10 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.model;
+package dx.queen.newcalculationandmaps.model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Deprecated
 public class FillCollection {
 
     int elements;

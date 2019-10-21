@@ -1,8 +1,9 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.model;
+package dx.queen.newcalculationandmaps.model;
 
 import java.util.HashMap;
 import java.util.TreeMap;
 
+@Deprecated
 public class FillMaps {
     int elements;
     private TreeMap<Integer, Integer> treemap;
@@ -12,7 +13,6 @@ public class FillMaps {
         this.elements = elements;
 
     }
-
 
 
     public TreeMap<Integer, Integer> fillTreeMap() {

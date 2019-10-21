@@ -1,7 +1,8 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.model;
+package dx.queen.newcalculationandmaps.model;
 
 import java.util.List;
 
+@Deprecated
 public class NamesListCollection {
     public static List<String> names;
 

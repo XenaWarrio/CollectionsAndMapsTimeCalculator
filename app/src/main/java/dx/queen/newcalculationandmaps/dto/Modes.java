@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.dto;
+package dx.queen.newcalculationandmaps.dto;
 
 public class Modes {
     public static final String COLLECTIONS = "collections";

@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps.collectionsandmaps.adapterstuff;
+package dx.queen.newcalculationandmaps.ui.fragments;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,28 +6,23 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import dx.queen.collectionsandmaps.R;
+import dx.queen.newcalculationandmaps.R;
+import dx.queen.newcalculationandmaps.dto.CalculationResult;
 
-public class AdapterRecyclerCollections extends RecyclerView.Adapter<AdapterRecyclerCollections.ViewHolderTime> {
+public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolderTime> {
 
-    //  private ArrayList<String> mainList;
-    private List<CalculationResult> items;
-
-    public AdapterRecyclerCollections(ArrayList<CalculationResult> items) {
-        this.items = items == null ? new ArrayList<CalculationResult>() : items;
-
-    }
+    private final List<CalculationResult> items = new ArrayList<>();
 
     @NonNull
     @Override
     public ViewHolderTime onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.model, viewGroup, false);
-
+        final View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.model, viewGroup, false);
         return new ViewHolderTime(v);
     }
 
@@ -42,23 +37,34 @@ public class AdapterRecyclerCollections extends RecyclerView.Adapter<AdapterRecy
         return items.size();
     }
 
-    public void setItems(List<CalculationResult> namesAndTimes) {
+    void setItems(List<CalculationResult> namesAndTimes) {
         items.clear();
         items.addAll(namesAndTimes);
+        notifyDataSetChanged();
     }
 
-    public void showProgress() {
+    void showProgress() {
         for (int i = 0; i < items.size(); i++) {
-            items.get(i).setShowProgress(false);
-            notifyDataSetChanged();
+            items.get(i).setShowProgress(true);
+        }
+        notifyDataSetChanged();
+    }
+
+    void updateItem(CalculationResult result) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).tag.equals(result.tag)) {
+                items.set(i, result);
+                notifyItemChanged(i);
+                break;
+            }
         }
     }
 
-    public class ViewHolderTime extends RecyclerView.ViewHolder {
+    class ViewHolderTime extends RecyclerView.ViewHolder {
         private final ProgressBar progressBar;
         private final TextView nameAndTime;
 
-        public ViewHolderTime(@NonNull View itemView) {
+        ViewHolderTime(@NonNull View itemView) {
             super(itemView);
             nameAndTime = itemView.findViewById(R.id.tv_name);
             progressBar = itemView.findViewById(R.id.progressBar);
@@ -66,9 +72,8 @@ public class AdapterRecyclerCollections extends RecyclerView.Adapter<AdapterRecy
         }
 
         void bind(CalculationResult item) {
-            nameAndTime.setText(item.getres());
+            nameAndTime.setText(item.getRes());
             progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.VISIBLE);
         }
-
     }
 }

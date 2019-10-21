@@ -13,6 +13,8 @@ public interface CollectionFragmentContract {
         void setupResult(CalculationResult result);
 
         void showProgress();
+
+        void calculationStopped();
     }
 
 
@@ -25,19 +27,5 @@ public interface CollectionFragmentContract {
         void startCalculation(String elements, String threads);
 
         void stopCalculation(boolean showMsg);
-    }
-
-    interface RepositoryRowView {
-
-        void setTitle(String title);
-
-        void setStarCount(int starCount);
-    }
-
-    interface Model {
-        List<String> executingCollection(int elements, int threads);
-
-        List<String> executingMaps(int elements, int threads);
-
     }
 }

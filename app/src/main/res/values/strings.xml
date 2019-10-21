@@ -2,10 +2,11 @@
     <string name="app_name">NewCalculationAndMaps</string>
     <string name="tab_collections" />
     <string name="tab_maps" />
-    <string name="operations" />
-    <string name="threads" />
-    <string name="start" />
+    <string name="operations">Elements</string>
+    <string name="threads">Threads</string>
+    <string name="start">Start</string>>
     <string name="calculation_stopped" />
     <string name="calculation_finished" />
     <string name="add_to_array_list" />
+    <string name="stop">Stop</string>
 </resources>

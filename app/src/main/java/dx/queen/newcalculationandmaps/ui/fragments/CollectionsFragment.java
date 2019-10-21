@@ -85,8 +85,9 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        presenter.stopCalculation(false);
         unbinder.unbind();
+        super.onDestroy();
     }
 
     @Override
@@ -115,5 +116,10 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     @Override
     public void showProgress() {
         adapter.showProgress();
+    }
+
+    @Override
+    public void calculationStopped() {
+        start.setChecked(false);
     }
 }

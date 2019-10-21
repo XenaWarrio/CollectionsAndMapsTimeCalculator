@@ -1,83 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.fragments.CollectionsFragment">
+    android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_operations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/operations"
-            android:textColor="@color/grey"
-            android:textSize="25sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/tv_operations"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/operations"
+        app:layout_constraintBottom_toBottomOf="@+id/et_operations"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_operations" />
 
-        <TextView
-            android:id="@+id/tv_threads"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_operations"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/threads"
-            android:textColor="@color/grey"
-            android:textSize="25sp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_operations"
-            app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/et_operations"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="@string/operations"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/bt_start"
+        app:layout_constraintStart_toEndOf="@+id/tv_operations"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!--        <EditText-->
-    <!--            android:id="@+id/et_operations"-->
-    <!--            android:layout_width="100dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="20dp"-->
-    <!--            android:layout_marginTop="40dp"-->
-    <!--            android:layout_toEndOf="@+id/tv_operations"-->
-    <!--            android:autofillHints="@string/operations"-->
-    <!--            android:hint="@string/operations"-->
-    <!--            android:inputType="number" />-->
+    <TextView
+        android:id="@+id/tv_threads"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/threads"
+        app:layout_constraintBottom_toBottomOf="@+id/et_threads"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_operations" />
 
-    <!--        <EditText-->
-    <!--            android:id="@+id/et_threads"-->
-    <!--            android:layout_width="100dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@+id/et_operations"-->
-    <!--            android:layout_marginStart="50dp"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:layout_toEndOf="@+id/tv_threads"-->
-    <!--            android:autofillHints="@string/threads"-->
-    <!--            android:hint="@string/threads"-->
-    <!--            android:inputType="number" />-->
+    <EditText
+        android:id="@+id/et_threads"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="@string/threads"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/bt_start"
+        app:layout_constraintStart_toEndOf="@+id/tv_threads"
+        app:layout_constraintTop_toBottomOf="@+id/et_operations" />
 
-    <!--        <ToggleButton-->
-    <!--            android:id="@+id/bt_start"-->
-    <!--            android:layout_width="100dp"-->
-    <!--            android:layout_height="100dp"-->
-    <!--            android:layout_marginStart="15dp"-->
-    <!--            android:layout_marginTop="40dp"-->
-    <!--            android:layout_toEndOf="@+id/et_operations"-->
-    <!--            android:text="@string/start"-->
-    <!--            android:textSize="20sp" />-->
+    <ToggleButton
+        android:id="@+id/bt_start"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textOff="@string/start"
+        android:textOn="@string/stop"
+        app:layout_constraintBottom_toBottomOf="@+id/et_threads"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/recycler"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="276dp"-->
-    <!--        android:layout_marginStart="8dp"-->
-    <!--        android:layout_marginTop="24dp"-->
-    <!--        android:layout_marginEnd="8dp"-->
-    <!--        android:layout_marginBottom="8dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"-->
-    <!--        app:layout_constraintVertical_bias="0.05" />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_threads"
+        app:layout_constraintVertical_chainStyle="spread" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

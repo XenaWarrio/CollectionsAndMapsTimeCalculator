@@ -68,12 +68,15 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void stopCalculation(boolean showMsg) {
-        if (executorPool != null) {
-            executorPool.shutdownNow();
-            executorPool = null;
-        }
-        if (showMsg && view != null) {
-            view.showToast(R.string.calculation_stopped);
+        if (executorPool == null) return;
+        executorPool.shutdownNow();
+        executorPool = null;
+
+        if (view != null) {
+            view.calculationStopped();
+            if (showMsg) {
+                view.showToast(R.string.calculation_stopped);
+            }
         }
     }
 }

@@ -6,7 +6,8 @@ import java.util.List;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.dto.CalculationResult;
 import dx.queen.newcalculationandmaps.dto.Tags;
-import dx.queen.newcalculationandmaps.dto.TaskData;
+import dx.queen.newcalculationandmaps.dto.task.ListTaskData;
+import dx.queen.newcalculationandmaps.dto.task.TaskData;
 
 public class CollectionsTasksSupplier implements TaskSupplier {
     @Override
@@ -17,8 +18,8 @@ public class CollectionsTasksSupplier implements TaskSupplier {
     @Override
     public List<TaskData> getTasks() {
         final List<TaskData> tasks = new ArrayList<>(21);
-        tasks.add(new TaskData(new ArrayList<>(), R.string.add_to_array_list, Tags.ADD_TO_START_ARRAY_LIST));
-        // TODO ksenia: fill
+        tasks.add(new ListTaskData(new ArrayList<>(), R.string.add_to_array_list, Tags.ADD_TO_START_ARRAY_LIST));
+        // TODO: fill
         return tasks;
     }
 

@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
-import dx.queen.newcalculationandmaps.dto.TaskData;
+import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;

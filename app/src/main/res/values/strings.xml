@@ -9,4 +9,5 @@
     <string name="calculation_finished" />
     <string name="add_to_array_list" />
     <string name="stop">Stop</string>
+    <string name="add_to_map">Add to HashMap</string>
 </resources>

@@ -3,7 +3,7 @@ package dx.queen.newcalculationandmaps.model.calculator;
 import java.util.List;
 
 import dx.queen.newcalculationandmaps.dto.Tags;
-import dx.queen.newcalculationandmaps.dto.TaskData;
+import dx.queen.newcalculationandmaps.dto.task.TaskData;
 
 public class TimeCalculatorImpl implements TimeCalculator {
 
@@ -12,8 +12,8 @@ public class TimeCalculatorImpl implements TimeCalculator {
         switch (td.getTag()) {
             case Tags.ADD_TO_START_ARRAY_LIST: {
                 final long start = System.nanoTime();
-                addToStartList(td.collection);
-                td.setTime((System.nanoTime() - start) / 1000D);
+                addToStartList(td.getList());
+                td.setTime((System.nanoTime() - start) / 1_000_000D);
             }
             break;
 

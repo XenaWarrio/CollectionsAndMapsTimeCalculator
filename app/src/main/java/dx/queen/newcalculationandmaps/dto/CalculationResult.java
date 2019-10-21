@@ -6,7 +6,7 @@ public class CalculationResult {
     public final double time;
     private boolean showProgress = false;
 
-    CalculationResult(int labelResId, String tag, double time) {
+    public CalculationResult(int labelResId, String tag, double time) {
         this.labelResId = labelResId;
         this.tag = tag;
         this.time = time;

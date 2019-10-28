@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-@Deprecated
 public class TasksMap implements Runnable {
 
     TreeMap<Integer, Integer> treemap;
@@ -14,15 +13,15 @@ public class TasksMap implements Runnable {
     int value = 23;
     int num;
 
-    public TasksMap(TreeMap<Integer, Integer> treemap, int num) {
-        this.treemap = treemap;
-        this.num = num;
-    }
-
-    public TasksMap(HashMap<Integer, Integer> hashMap, int num) {
-        this.num = num;
-        this.hashMap = hashMap;
-    }
+//    public TasksMap(TreeMap<Integer, Integer> treemap, int num) {
+//        this.treemap = treemap;
+//        this.num = num;
+//    }
+//
+//    public TasksMap(HashMap<Integer, Integer> hashMap, int num) {
+//        this.num = num;
+//        this.hashMap = hashMap;
+//    }
 
 
     @Override
@@ -61,29 +60,29 @@ public class TasksMap implements Runnable {
 
     }
 
-    private synchronized void addingTreeMap() {
+    public synchronized void addingTreeMap() {
         treemap.put(key, value);
     }
 
-    private synchronized void searchTreeMap() {
+    public synchronized void searchTreeMap() {
         treemap.get(key);
     }
 
 
-    private synchronized void removeTreeMap() {
+    public synchronized void removeTreeMap() {
         treemap.remove(key);
     }
 
-    private synchronized void addingHashMap() {
+    public synchronized void addingHashMap() {
         hashMap.put(key, value);
     }
 
-    private synchronized void searchHashMap() {
+    public synchronized void searchHashMap() {
         hashMap.get(key);
     }
 
 
-    private synchronized void removeHashMap() {
+    public synchronized void removeHashMap() {
         hashMap.remove(key);
     }
 

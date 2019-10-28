@@ -1,13 +1,25 @@
 package dx.queen.newcalculationandmaps.dto.task;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MapTaskData extends AbstractTaskData {
     private final Map<Integer, Integer> map;
 
-    public MapTaskData(Map<Integer, Integer> map, int labelResId, String tag) {
-        super(labelResId, tag);
+    public MapTaskData(HashMap<Integer, Integer> map, int labelResId) {
+        super(labelResId);
         this.map = map;
+    }
+   public MapTaskData(TreeMap<Integer, Integer> map, int labelResId) {
+        super(labelResId);
+        this.map = map;
+    }
+
+
+    @Override
+    public int getRes() {
+        return 0;
     }
 
     public void fill(int elements) {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Deprecated
+
 public class TasksCollection implements Runnable {
     ArrayList<Integer> arrayList;
     LinkedList<Integer> linkedList;
@@ -14,20 +14,20 @@ public class TasksCollection implements Runnable {
     int element = 5;
     int num;
 
-    public TasksCollection(ArrayList<Integer> arrayList, int num) {
-        this.num = num;
-        this.arrayList = arrayList;
-    }
-
-    public TasksCollection(LinkedList<Integer> linkedList, int num) {
-        this.num = num;
-        this.linkedList = linkedList;
-    }
-
-    public TasksCollection(CopyOnWriteArrayList<Integer> copyOnWriteArrayList, int num) {
-        this.num = num;
-        this.copyOnWriteArrayList = copyOnWriteArrayList;
-    }
+//    public TasksCollection(ArrayList<Integer> arrayList, int num) {
+//        this.num = num;
+//        this.arrayList = arrayList;
+//    }
+//
+//    public TasksCollection(LinkedList<Integer> linkedList, int num) {
+//        this.num = num;
+//        this.linkedList = linkedList;
+//    }
+//
+//    public TasksCollection(CopyOnWriteArrayList<Integer> copyOnWriteArrayList, int num) {
+//        this.num = num;
+//        this.copyOnWriteArrayList = copyOnWriteArrayList;
+//    }
 
 
     @Override
@@ -150,91 +150,91 @@ public class TasksCollection implements Runnable {
     }
 
 
-    private synchronized void addingStartList() {
+    public  synchronized void addingStartList() {
         arrayList.add(0, element);
     }
 
-    private synchronized void addingMiddleList() {
+    public synchronized void addingMiddleList() {
         arrayList.add(arrayList.size() / 2, element);
     }
 
-    private synchronized void addingEndList() {
+    public synchronized void addingEndList() {
         arrayList.add(element);
     }
 
-    private synchronized void removeStartList() {
+    public synchronized void removeStartList() {
         arrayList.subList(0, 0).clear();
     }
 
-    private synchronized void removeMiddleList() {
+    public synchronized void removeMiddleList() {
         arrayList.subList(arrayList.size() / 2, element / 2).clear();
     }
 
-    private synchronized void removeEndList() {
+    public synchronized void removeEndList() {
         arrayList.remove(element);
     }
 
-    private synchronized void searchElementList() {
+    public synchronized void searchElementList() {
         arrayList.get(arrayList.indexOf(element));
 
     }
 
 
-    private synchronized void addingStartLinkedList() {
+    public synchronized void addingStartLinkedList() {
         linkedList.addFirst(element);
     }
 
-    private synchronized void addingMiddleLinkedList() {
+    public synchronized void addingMiddleLinkedList() {
         linkedList.add(linkedList.size() / 2, element);
     }
 
-    private synchronized void addingEndLinkedList() {
+    public synchronized void addingEndLinkedList() {
         linkedList.addLast(element);
     }
 
-    private synchronized void removeStartLinkedList() {
+    public synchronized void removeStartLinkedList() {
         linkedList.removeFirst();
     }
 
-    private synchronized void removeMiddleLinkedList() {
+    public synchronized void removeMiddleLinkedList() {
         linkedList.remove(linkedList.size() / 2);
 
     }
 
-    private synchronized void removeEndLinkedList() {
+    public synchronized void removeEndLinkedList() {
         linkedList.removeLast();
     }
 
-    private synchronized void searchElementLinkedList() {
+    public synchronized void searchElementLinkedList() {
         linkedList.get(linkedList.indexOf(element));
     }
 
 
-    private void addingStartCopyOnWriteArrayList() {
+    public void addingStartCopyOnWriteArrayList() {
         copyOnWriteArrayList.add(0, element);
     }
 
-    private void addingMiddleCopyOnWriteArrayList() {
+    public void addingMiddleCopyOnWriteArrayList() {
         copyOnWriteArrayList.add(copyOnWriteArrayList.size() / 2, element);
     }
 
-    private void addingEndCopyOnWriteArrayList() {
+    public void addingEndCopyOnWriteArrayList() {
         copyOnWriteArrayList.add(element);
     }
 
-    private void removeStartCopyOnWriteArrayList() {
+    public void removeStartCopyOnWriteArrayList() {
         copyOnWriteArrayList.subList(0, 0).clear();
     }
 
-    private void removeMiddleCopyOnWriteArrayList() {
+    public void removeMiddleCopyOnWriteArrayList() {
         copyOnWriteArrayList.subList(copyOnWriteArrayList.size() / 2, copyOnWriteArrayList.size() / 2).clear();
     }
 
-    private void removeEndCopyOnWriteArrayList() {
+    public void removeEndCopyOnWriteArrayList() {
         copyOnWriteArrayList.remove(element);
     }
 
-    private void searchElementCopyOnWriteArrayList() {
+    public void searchElementCopyOnWriteArrayList() {
         copyOnWriteArrayList.get(copyOnWriteArrayList.indexOf(element));
 
     }

@@ -29,5 +29,10 @@
     <string name="search_linked" />
     <string name="search_caw" />
     <string name="stop">Stop</string>
-    <string name="add_to_map">Add to HashMap</string>
+    <string name="add_to_hashmap">Add to HashMap</string>
+    <string name="add_to_treemapmap">Add to TreeMap</string>
+    <string name="remove_hashmap">remove HashMap</string>
+    <string name="remove_treemap">remove TreeMap</string>
+    <string name="search_hashmap">search HashMap</string>
+    <string name="search_treemap">search treeMap</string>
 </resources>

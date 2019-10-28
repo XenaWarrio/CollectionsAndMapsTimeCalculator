@@ -19,10 +19,8 @@ public interface TaskData {
 
     void fill(int elements);
 
-    ArrayList<Integer> getArrayList();
-    LinkedList<Integer> getLinkedList();
-    CopyOnWriteArrayList<Integer> getCopyAndWriteList();
+    List<Integer> getList();
 
-    HashMap<Integer, Integer> getHashMap();
-    TreeMap<Integer, Integer> getTreeMap();
+
+    Map<Integer, Integer> getMap();
 }

@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,11 +16,11 @@ import dx.queen.newcalculationandmaps.dto.TasksMap;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 
 public class TimeCalculatorImpl implements TimeCalculator {
-    TreeMap<Integer, Integer> treemap;
-    HashMap<Integer, Integer> hashMap;
-    ArrayList<Integer> arrayList;
-    LinkedList<Integer> linkedList;
-    CopyOnWriteArrayList<Integer> copyOnWriteArrayList;
+    Map<Integer, Integer> treemap;
+    Map<Integer, Integer> hashMap;
+    List<Integer> arrayList;
+    List<Integer> linkedList;
+    List<Integer> copyOnWriteArrayList;
     int element = 5;
     int key = 254;
     int value = 23;
@@ -26,11 +28,16 @@ public class TimeCalculatorImpl implements TimeCalculator {
     @Override
     public void execAndSetupTime(TaskData td) {
         final long start = System.nanoTime();
-        arrayList= td.getArrayList();
-        linkedList = td.getLinkedList();
-        copyOnWriteArrayList = td.getCopyAndWriteList();
-        hashMap = td.getHashMap();
-        treemap = td.getTreeMap();
+        arrayList= new ArrayList<>();
+        arrayList = td.getList();
+        linkedList = new LinkedList<>();
+        linkedList = td.getList();
+        copyOnWriteArrayList = new CopyOnWriteArrayList<>();
+        copyOnWriteArrayList = td.getList();
+        hashMap = new HashMap<>();
+        hashMap = td.getMap();
+        treemap = new TreeMap<>();
+        treemap = td.getMap();
         switch (td.getLabelResId()) {
             case R.string.add_to_start_array_list:
                 addingStartList();

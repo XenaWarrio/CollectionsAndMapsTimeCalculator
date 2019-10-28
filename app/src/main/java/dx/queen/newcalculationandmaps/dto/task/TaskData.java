@@ -1,7 +1,12 @@
 package dx.queen.newcalculationandmaps.dto.task;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import dx.queen.newcalculationandmaps.dto.CalculationResult;
 
@@ -14,7 +19,10 @@ public interface TaskData {
 
     void fill(int elements);
 
-    List<Integer> getList();
+    ArrayList<Integer> getArrayList();
+    LinkedList<Integer> getLinkedList();
+    CopyOnWriteArrayList<Integer> getCopyAndWriteList();
 
-    Map<Integer, Integer> getMap();
+    HashMap<Integer, Integer> getHashMap();
+    TreeMap<Integer, Integer> getTreeMap();
 }

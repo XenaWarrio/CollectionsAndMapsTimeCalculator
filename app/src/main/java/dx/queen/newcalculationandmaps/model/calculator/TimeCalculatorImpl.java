@@ -1,130 +1,149 @@
 package dx.queen.newcalculationandmaps.model.calculator;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.dto.TasksCollection;
 import dx.queen.newcalculationandmaps.dto.TasksMap;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 
 public class TimeCalculatorImpl implements TimeCalculator {
-    TasksCollection task;
-    TasksMap tasksMap;
+    TreeMap<Integer, Integer> treemap;
+    HashMap<Integer, Integer> hashMap;
+    ArrayList<Integer> arrayList;
+    LinkedList<Integer> linkedList;
+    CopyOnWriteArrayList<Integer> copyOnWriteArrayList;
+    int element = 5;
+    int key = 254;
+    int value = 23;
 
     @Override
     public void execAndSetupTime(TaskData td) {
         final long start = System.nanoTime();
+        arrayList= td.getArrayList();
+        linkedList = td.getLinkedList();
+        copyOnWriteArrayList = td.getCopyAndWriteList();
+        hashMap = td.getHashMap();
+        treemap = td.getTreeMap();
         switch (td.getLabelResId()) {
             case R.string.add_to_start_array_list:
-                task.addingStartList();
+                addingStartList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_middle_array_list:
-                task.addingMiddleList();
+                addingMiddleList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_end_array_list:
-                task.addingEndList();
+                addingEndList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_start_array_list:
-                task.removeStartList();
+                removeStartList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_middle_array_list:
-                task.removeMiddleList();
+                removeMiddleList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_end_array_list:
-                task.removeEndList();
+                removeEndList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.search_array:
-                task.searchElementList();
+                searchElementList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_start_linked_list:
-                task.addingStartLinkedList();
+                addingStartLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_middle_linked_list:
-                task.addingMiddleLinkedList();
+                addingMiddleLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_end_linked_list:
-                task.addingEndLinkedList();
+                addingEndLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_start_linked_list:
-                task.removeStartLinkedList();
+                removeStartLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_middle_linked_list:
-                task.removeEndLinkedList();
+                removeEndLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_end_linked_list:
-                task.removeEndLinkedList();
+                removeEndLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.search_linked:
-                task.searchElementLinkedList();
+                searchElementLinkedList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_start_caw:
-                task.addingStartCopyOnWriteArrayList();
+                addingStartCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_middle_caw:
-                task.addingMiddleCopyOnWriteArrayList();
+                addingMiddleCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.add_to_end_caw:
-                task.addingEndCopyOnWriteArrayList();
+                addingEndCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_start_caw:
-                task.removeStartCopyOnWriteArrayList();
+                removeStartCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_middle_caw:
-                task.removeMiddleCopyOnWriteArrayList();
+                removeMiddleCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.remove_end_caw:
-                task.removeEndCopyOnWriteArrayList();
+                removeEndCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
             case R.string.search_caw:
-                task.searchElementCopyOnWriteArrayList();
+                searchElementCopyOnWriteArrayList();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
             case R.string.add_to_hashmap:
-                tasksMap.addingHashMap();
+                addingHashMap();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
             case R.string.remove_hashmap:
-                tasksMap.removeHashMap();
+                removeHashMap();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
             case R.string.search_hashmap:
-                tasksMap.searchHashMap();
+                searchHashMap();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
             case R.string.add_to_treemapmap:
-                tasksMap.addingTreeMap();
+                addingTreeMap();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
             case R.string.remove_treemap:
-                tasksMap.removeTreeMap();
+                removeTreeMap();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
             case R.string.search_treemap:
-                tasksMap.searchTreeMap();
+                searchTreeMap();
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
@@ -132,8 +151,129 @@ public class TimeCalculatorImpl implements TimeCalculator {
             // TODO: fill + measure time
         }
     }
-//
-//    private void addToStartList(List<Integer> collection) {
-//        collection.add(0, 1);
-//    }
+
+
+
+    public  synchronized void addingStartList() {
+        arrayList.add(0, element);
+    }
+
+    public synchronized void addingMiddleList() {
+        arrayList.add(arrayList.size() / 2, element);
+    }
+
+    public synchronized void addingEndList() {
+        arrayList.add(element);
+    }
+
+    public synchronized void removeStartList() {
+        arrayList.subList(0, 0).clear();
+    }
+
+    public synchronized void removeMiddleList() {
+        arrayList.subList(arrayList.size() / 2, element / 2).clear();
+    }
+
+    public synchronized void removeEndList() {
+        arrayList.remove(element);
+    }
+
+    public synchronized void searchElementList() {
+        arrayList.get(arrayList.indexOf(element));
+
+    }
+
+
+    public synchronized void addingStartLinkedList() {
+        linkedList.addFirst(element);
+    }
+
+    public synchronized void addingMiddleLinkedList() {
+        linkedList.add(linkedList.size() / 2, element);
+    }
+
+    public synchronized void addingEndLinkedList() {
+        linkedList.addLast(element);
+    }
+
+    public synchronized void removeStartLinkedList() {
+        linkedList.removeFirst();
+    }
+
+    public synchronized void removeMiddleLinkedList() {
+        linkedList.remove(linkedList.size() / 2);
+
+    }
+
+    public synchronized void removeEndLinkedList() {
+        linkedList.removeLast();
+    }
+
+    public synchronized void searchElementLinkedList() {
+        linkedList.get(linkedList.indexOf(element));
+    }
+
+
+    public void addingStartCopyOnWriteArrayList() {
+        copyOnWriteArrayList.add(0, element);
+    }
+
+    public void addingMiddleCopyOnWriteArrayList() {
+        copyOnWriteArrayList.add(copyOnWriteArrayList.size() / 2, element);
+    }
+
+    public void addingEndCopyOnWriteArrayList() {
+        copyOnWriteArrayList.add(element);
+    }
+
+    public void removeStartCopyOnWriteArrayList() {
+        copyOnWriteArrayList.subList(0, 0).clear();
+    }
+
+    public void removeMiddleCopyOnWriteArrayList() {
+        copyOnWriteArrayList.subList(copyOnWriteArrayList.size() / 2, copyOnWriteArrayList.size() / 2).clear();
+    }
+
+    public void removeEndCopyOnWriteArrayList() {
+        copyOnWriteArrayList.remove(element);
+    }
+
+    public void searchElementCopyOnWriteArrayList() {
+        copyOnWriteArrayList.get(copyOnWriteArrayList.indexOf(element));
+
+    }
+
+
+
+
+
+    public synchronized void addingTreeMap() {
+        treemap.put(key, value);
+    }
+
+    public synchronized void searchTreeMap() {
+        treemap.get(key);
+    }
+
+
+    public synchronized void removeTreeMap() {
+        treemap.remove(key);
+    }
+
+    public synchronized void addingHashMap() {
+        hashMap.put(key, value);
+    }
+
+    public synchronized void searchHashMap() {
+        hashMap.get(key);
+    }
+
+
+    public synchronized void removeHashMap() {
+        hashMap.remove(key);
+    }
+
+
 }
+
+

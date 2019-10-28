@@ -58,6 +58,7 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = FragmentInjector.createPresenter(getArguments().getString(MAIN_MODE));
+        presenter.subscribe(this);
     }
 
     @Nullable

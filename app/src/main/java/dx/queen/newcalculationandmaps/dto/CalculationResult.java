@@ -1,14 +1,12 @@
 package dx.queen.newcalculationandmaps.dto;
 
 public class CalculationResult {
-    public final String tag;
     public final int labelResId;
     public final double time;
     private boolean showProgress = false;
 
-    public CalculationResult(int labelResId, String tag, double time) {
+    public CalculationResult(int labelResId,  double time) {
         this.labelResId = labelResId;
-        this.tag = tag;
         this.time = time;
     }
 

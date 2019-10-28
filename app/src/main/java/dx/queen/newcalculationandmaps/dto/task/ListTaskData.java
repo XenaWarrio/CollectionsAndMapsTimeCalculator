@@ -5,10 +5,17 @@ import java.util.List;
 
 public class ListTaskData extends AbstractTaskData {
     private final List<Integer> collection;
+    int labelResId;
 
-    public ListTaskData(List<Integer> collection, int labelResId, String tag) {
-        super(labelResId, tag);
+    public ListTaskData(List<Integer> collection, int labelResId) {
+        super(labelResId);
         this.collection = collection;
+    }
+
+
+    @Override
+    public int getRes() {
+        return labelResId;
     }
 
     public void fill(int elements) {

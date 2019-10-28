@@ -1,10 +1,10 @@
 package dx.queen.newcalculationandmaps.mvp;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+;
 
 public abstract class MvpFragment<T extends MvpContract.Presenter> extends Fragment implements MvpContract.View {
     protected T presenter;

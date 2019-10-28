@@ -7,12 +7,10 @@ import dx.queen.newcalculationandmaps.dto.CalculationResult;
 
 public abstract class AbstractTaskData implements TaskData {
     private final int labelResId;
-    private String tag;
     private double time = -1;
 
-    AbstractTaskData(int labelResId, String tag) {
+    AbstractTaskData(int labelResId) {
         this.labelResId = labelResId;
-        this.tag = tag;
     }
 
     @Override
@@ -25,9 +23,6 @@ public abstract class AbstractTaskData implements TaskData {
         return null;
     }
 
-    public String getTag() {
-        return tag;
-    }
 
     public double getTime() {
         return time;
@@ -38,6 +33,6 @@ public abstract class AbstractTaskData implements TaskData {
     }
 
     public CalculationResult getResult() {
-        return new CalculationResult(labelResId, tag, time);
+        return new CalculationResult(labelResId, time);
     }
 }

@@ -14,7 +14,7 @@ public class ListTaskData extends AbstractTaskData {
 
 
     @Override
-    public int getRes() {
+    public int getLabelResId() {
         return labelResId;
     }
 

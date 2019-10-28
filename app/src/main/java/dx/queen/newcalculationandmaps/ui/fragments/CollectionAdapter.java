@@ -52,7 +52,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     void updateItem(CalculationResult result) {
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).tag.equals(result.tag)) {
+            if (items.get(i).labelResId == result.labelResId) {
                 items.set(i, result);
                 notifyItemChanged(i);
                 break;

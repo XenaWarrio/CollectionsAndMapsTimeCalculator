@@ -16,12 +16,6 @@ public class MapTaskData extends AbstractTaskData {
         this.map = map;
     }
 
-
-    @Override
-    public int getRes() {
-        return 0;
-    }
-
     public void fill(int elements) {
         // TODO: fill map
     }

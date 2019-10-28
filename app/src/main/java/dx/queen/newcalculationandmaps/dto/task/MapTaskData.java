@@ -5,8 +5,8 @@ import java.util.Map;
 public class MapTaskData extends AbstractTaskData {
     private final Map<Integer, Integer> map;
 
-    public MapTaskData(Map<Integer, Integer> map, int labelResId, String tag) {
-        super(labelResId, tag);
+    public MapTaskData(Map<Integer, Integer> map, int labelResId) {
+        super(labelResId);
         this.map = map;
     }
 

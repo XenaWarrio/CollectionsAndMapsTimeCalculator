@@ -8,7 +8,7 @@ import dx.queen.newcalculationandmaps.dto.CalculationResult;
 public interface TaskData {
     CalculationResult getResult();
 
-    int getRes();
+    int getLabelResId();
 
     void setTime(double time);
 

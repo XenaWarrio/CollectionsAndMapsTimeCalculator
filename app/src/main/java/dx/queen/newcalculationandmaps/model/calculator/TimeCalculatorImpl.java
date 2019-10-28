@@ -9,7 +9,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
 
     @Override
     public void execAndSetupTime(TaskData td) {
-        switch (td.getRes()) {
+        switch (td.getLabelResId()) {
             case R.string.add_to_start_array_list:
                 final long start = System.nanoTime();
                 addToStartList(td.getList());

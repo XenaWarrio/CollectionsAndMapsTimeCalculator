@@ -23,6 +23,10 @@ public abstract class AbstractTaskData implements TaskData {
         return null;
     }
 
+    @Override
+    public int getLabelResId() {
+        return labelResId;
+    }
 
     public double getTime() {
         return time;

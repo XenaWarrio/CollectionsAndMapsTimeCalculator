@@ -1,5 +1,6 @@
 package dx.queen.newcalculationandmaps.dto.task;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -17,7 +18,9 @@ public class MapTaskData extends AbstractTaskData {
     }
 
     public void fill(int elements) {
-        // TODO: fill map
+       for(int i = 0; i < elements; i++){
+           map.put(i,3);
+       }
     }
 
     @Override

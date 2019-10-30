@@ -9,13 +9,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -59,6 +58,7 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
         super.onCreate(savedInstanceState);
         presenter = FragmentInjector.createPresenter(getArguments().getString(MAIN_MODE));
         presenter.subscribe(this);
+        showProgress(false);
     }
 
     @Nullable
@@ -115,8 +115,8 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     }
 
     @Override
-    public void showProgress() {
-        adapter.showProgress();
+    public void showProgress(boolean mode) {
+        adapter.showProgress(mode);
     }
 
     @Override

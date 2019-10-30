@@ -37,14 +37,14 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     @Override
     public void startCalculation(String elements, String threads) {
         // TODO ksenia: validate inputs
-        final int threadsInt = Integer.parseInt(threads);
-        final int elementsInt = Integer.parseInt(threads);
+        final int threadsInt = Integer.valueOf(threads);
+        final int elementsInt = Integer.valueOf(threads);
 
 
         final List<TaskData> taskDatas = tasksSupplier.getTasks();
         stopCalculation(false); // false means stop pool, but don't update ui
 
-        view.showProgress();
+        view.showProgress(true);
         executorPool = Executors.newFixedThreadPool(threadsInt);
         for (TaskData td : new ArrayList<>(taskDatas)) {
             executorPool.submit(() -> {

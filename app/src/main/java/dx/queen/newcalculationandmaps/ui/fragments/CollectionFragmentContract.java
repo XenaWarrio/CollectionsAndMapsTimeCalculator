@@ -12,7 +12,7 @@ public interface CollectionFragmentContract {
 
         void setupResult(CalculationResult result);
 
-        void showProgress();
+        void showProgress(boolean show);
 
         void calculationStopped();
     }

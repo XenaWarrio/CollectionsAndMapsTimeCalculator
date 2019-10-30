@@ -1,16 +1,16 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.dto.CalculationResult;
 
@@ -28,7 +28,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolderTime viewHolderTime, int i) {
         viewHolderTime.bind(items.get(i));
-
     }
 
     @Override
@@ -42,9 +41,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         notifyDataSetChanged();
     }
 
-    void showProgress() {
+    void showProgress(boolean mode) {
         for (int i = 0; i < items.size(); i++) {
-            items.get(i).setShowProgress(true);
+            items.get(i).setShowProgress(mode);
         }
         notifyDataSetChanged();
     }
@@ -62,17 +61,20 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     class ViewHolderTime extends RecyclerView.ViewHolder {
         private final ProgressBar progressBar;
         private final TextView nameAndTime;
+        View v;
 
         ViewHolderTime(@NonNull View itemView) {
             super(itemView);
             nameAndTime = itemView.findViewById(R.id.tv_name);
             progressBar = itemView.findViewById(R.id.progressBar);
-
+            this.v = itemView;
         }
 
         void bind(CalculationResult item) {
-            nameAndTime.setText(item.getRes());
-            progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.VISIBLE);
+            final String s = nameAndTime.getContext().getString(item.getRes()) + (item.isTimeDefault() ? "-:-" : (item.time + " ms"));
+            nameAndTime.setText(s);
+            progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }
+//сли этот код работает , то его писала ксюша, если нет , то не знаю , кто писал

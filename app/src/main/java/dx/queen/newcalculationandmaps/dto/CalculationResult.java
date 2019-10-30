@@ -10,7 +10,7 @@ public class CalculationResult {
         this.time = time;
     }
 
-    public boolean isTimeDefault() {
+   public boolean isTimeDefault() {
         return -1 == time;
     }
 

@@ -1,5 +1,7 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
+import android.widget.EditText;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +18,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
     private ExecutorService executorPool;
+    EditText editText;
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -36,7 +39,10 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
-        // TODO ksenia: validate inputs
+        if(elements.isEmpty() && threads.isEmpty()){
+            editText.setError("Ashibka!!!");
+        }
+
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);
 

@@ -115,11 +115,11 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void removeStart(List<Integer> list) {
-        list.subList(0, 0).clear();
+        list.remove(0);
     }
 
     private synchronized void removeMiddle(List<Integer> list) {
-        list.subList(list.size() / 2, 0).clear();
+        list.remove(list.size() / 2);
     }
 
     private synchronized void removeEndList(List<Integer> list) {

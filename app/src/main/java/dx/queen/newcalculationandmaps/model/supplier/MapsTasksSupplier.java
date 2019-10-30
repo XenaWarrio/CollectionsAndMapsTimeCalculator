@@ -20,12 +20,12 @@ public class MapsTasksSupplier implements TaskSupplier {
     @Override
     public List<TaskData> getTasks() {
         final List<TaskData> tasks = new ArrayList<>(6);
-        tasks.add(new MapTaskData(new HashMap<>(), R.string.add_to_hashmap));
-        tasks.add(new MapTaskData(new HashMap<>(), R.string.remove_hashmap));
-        tasks.add(new MapTaskData(new HashMap<>(), R.string.search_hashmap));
-        tasks.add(new MapTaskData(new TreeMap<>(), R.string.add_to_treemapmap));
-        tasks.add(new MapTaskData(new HashMap<>(), R.string.remove_treemap));
-        tasks.add(new MapTaskData(new HashMap<>(), R.string.search_treemap));
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.add_to_hashmap));
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.remove_hashmap));
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.search_hashmap));
+        tasks.add(new MapTaskData(new TreeMap<Integer, Integer>(), R.string.add_to_treemapmap));
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.remove_treemap));
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.search_treemap));
         return tasks;
     }
 

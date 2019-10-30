@@ -15,6 +15,7 @@ public interface CollectionFragmentContract {
         void showProgress(boolean show);
 
         void calculationStopped();
+         void setError( String error);
     }
 
 

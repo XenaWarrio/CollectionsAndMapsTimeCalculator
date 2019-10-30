@@ -78,6 +78,7 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
         start.setOnCheckedChangeListener(this);
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -122,5 +123,15 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     @Override
     public void calculationStopped() {
         start.setChecked(false);
+    }
+
+    @Override
+    public void setError(String error) {
+        if (error.equals("empty")) {
+            countOfElement.setError("Empty Field");
+        } else {
+            countOfThreads.setError("NULL");
+        }
+
     }
 }

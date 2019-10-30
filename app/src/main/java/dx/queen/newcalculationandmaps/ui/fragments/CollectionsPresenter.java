@@ -40,8 +40,12 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     @Override
     public void startCalculation(String elements, String threads) {
         if(elements.isEmpty() && threads.isEmpty()){
-            editText.setError("Ashibka!!!");
+            view.setError("empty");
         }
+        if(elements.equals("0") && threads.equals("0")){
+            view.setError("null");
+        }
+
 
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);

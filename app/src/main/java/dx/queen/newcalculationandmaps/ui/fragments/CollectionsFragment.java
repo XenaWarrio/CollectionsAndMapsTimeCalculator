@@ -126,12 +126,14 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     }
 
     @Override
-    public void setError(String error) {
-        if (error.equals("empty")) {
-            countOfElement.setError("Empty Field");
-        } else {
-            countOfThreads.setError("NULL");
-        }
-
+    public void setThreadsError(String error) {
+        countOfThreads.setError(error);
     }
+
+    @Override
+    public void setElemntsError(String error) {
+        countOfElement.setError(error);
+    }
+
+
 }

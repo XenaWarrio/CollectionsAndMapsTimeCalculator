@@ -5,6 +5,11 @@
     <string name="operations">Elements</string>
     <string name="threads">Threads</string>
     <string name="start">Start</string>>
+    <string name="threads_empty">Treads can`t be empty</string>
+    <string name="elements_empty">Elements can`t be empty</string>
+    <string name="threads_zero">Threads can`t be zero</string>>
+    <string name="elements_zero">Elements can`t be zero </string>
+
     <string name="calculation_stopped" >Calculation stop</string>>
     <string name="calculation_finished" >Calculation Finished</string>>
     <string name="add_to_start_array_list" >AddingStartArray</string>>

@@ -1,6 +1,6 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
-import android.widget.EditText;
+import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
     private ExecutorService executorPool;
-    EditText editText;
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -39,13 +38,21 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
-        if(elements.isEmpty() && threads.isEmpty()){
-            view.setError("empty");
+        if(threads.isEmpty()){
+            view.setThreadsError(Resources.getSystem().getString(R.string.threads_empty));
+            Resources.getSystem().getString(R.string.threads_empty);
+        } else if("0".equals(threads)) {
+            view.setThreadsError(Resources.getSystem().getString(R.string.threads_zero));
+        } else {
+            view.setThreadsError(null);
         }
-        if(elements.equals("0") && threads.equals("0")){
-            view.setError("null");
+        if(threads.isEmpty()){
+            view.setElemntsError(Resources.getSystem().getString(R.string.elements_empty));
+        } else if("0".equals(threads)) {
+            view.setElemntsError(Resources.getSystem().getString(R.string.threads_zero));
+        } else {
+            view.setElemntsError(null);
         }
-
 
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);

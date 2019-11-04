@@ -1,3 +1,43 @@
 <resources>
     <string name="app_name">NewCalculationAndMaps</string>
+    <string name="tab_collections"> Collections</string>
+    <string name="tab_maps" > Map</string>
+    <string name="operations">Elements</string>
+    <string name="threads">Threads</string>
+    <string name="start">Start</string>>
+    <string name="threads_empty">Treads can`t be empty</string>
+    <string name="elements_empty">Elements can`t be empty</string>
+    <string name="threads_zero">Threads can`t be zero</string>>
+    <string name="elements_zero">Elements can`t be zero </string>
+
+    <string name="calculation_stopped" >Calculation stop</string>>
+    <string name="calculation_finished" >Calculation Finished</string>>
+    <string name="add_to_start_array_list" >AddingStartArray</string>>
+    <string name="add_to_middle_array_list" >AddingMiddleArray</string>>
+    <string name="add_to_end_array_list" >AddingEndArray</string>>
+    <string name="add_to_start_linked_list" >AddingStartLinked</string>>
+    <string name="add_to_middle_linked_list" >AddingMiddleLinked</string>>
+    <string name="add_to_end_linked_list" >AddingEndLinked</string>>
+    <string name="add_to_start_caw" >AddingStartCaw</string>>
+    <string name="add_to_middle_caw" >AddingMiddleCaw</string>>
+    <string name="add_to_end_caw">AddingEndCaw</string>>
+    <string name="remove_start_array_list" >RemoveStartArray</string>>
+    <string name="remove_middle_array_list" >RemoveMiddleArray</string>>
+    <string name="remove_end_array_list" >RemoveEndArray</string>>
+    <string name="remove_start_linked_list" >RemoveStartLinked</string>>
+    <string name="remove_middle_linked_list" >RemoveMiddleLinked</string>>
+    <string name="remove_end_linked_list" >RemoveEndLinked</string>>
+    <string name="remove_start_caw" >RemoveStartCaw</string>>
+    <string name="remove_middle_caw" >RemoveMiddleCaw</string>>
+    <string name="remove_end_caw" >RemoveEndCaw</string>>
+    <string name="search_array" >SearchArray</string>>
+    <string name="search_linked" >SearchLinked</string>>
+    <string name="search_caw" >SearchCaw</string>>
+    <string name="stop">Stop</string>
+    <string name="add_to_hashmap">Add to HashMap</string>
+    <string name="add_to_treemapmap">Add to TreeMap</string>
+    <string name="remove_hashmap">remove HashMap</string>
+    <string name="remove_treemap">remove TreeMap</string>
+    <string name="search_hashmap">search HashMap</string>
+    <string name="search_treemap">search treeMap</string>
 </resources>

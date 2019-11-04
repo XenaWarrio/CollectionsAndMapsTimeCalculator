@@ -2,14 +2,14 @@ package dx.queen.newcalculationandmaps.ui;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 import dx.queen.newcalculationandmaps.R;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,4 +25,5 @@ public class MainActivity extends AppCompatActivity {
         tablayout.setupWithViewPager(viewPager);
 
     }
+
 }

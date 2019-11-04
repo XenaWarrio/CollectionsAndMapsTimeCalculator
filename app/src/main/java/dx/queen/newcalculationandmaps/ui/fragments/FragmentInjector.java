@@ -6,6 +6,7 @@ import dx.queen.newcalculationandmaps.model.calculator.TimeCalculatorImpl;
 import dx.queen.newcalculationandmaps.model.supplier.CollectionsTasksSupplier;
 import dx.queen.newcalculationandmaps.model.supplier.MapsTasksSupplier;
 
+@Deprecated
 class FragmentInjector {
 
     static CollectionsPresenter createPresenter(String mode) {

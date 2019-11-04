@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ToggleButton;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,8 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     private final CollectionAdapter adapter = new CollectionAdapter();
     private Unbinder unbinder;
 
+
+
     public static CollectionsFragment newInstance(String mode) {
         final Bundle args = new Bundle();
         args.putString(MAIN_MODE, mode);
@@ -56,9 +59,12 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = FragmentInjector.createPresenter(getArguments().getString(MAIN_MODE));
+        String mode = getArguments().toString();
+        DaggerFragmentComponent.builder().fragmentModule(new FragmentModule(mode))
+                .build().injectPresenter(this);
         presenter.subscribe(this);
         showProgress(false);
+
     }
 
     @Nullable
@@ -134,6 +140,12 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     public void setElemntsError(String error) {
         countOfElement.setError(error);
     }
+
+    @Override
+    public String getString(Integer strResId) {
+        return Objects.requireNonNull(getContext()).getString(strResId);
+    }
+
 
 
 }

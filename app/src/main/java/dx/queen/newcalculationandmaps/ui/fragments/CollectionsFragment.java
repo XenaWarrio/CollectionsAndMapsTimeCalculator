@@ -12,8 +12,6 @@ import android.widget.ToggleButton;
 import java.util.List;
 import java.util.Objects;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,11 +45,6 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     private final CollectionAdapter adapter = new CollectionAdapter();
     private Unbinder unbinder;
 
-    @Inject
-    CollectionFragmentContract.Presenter presenter;
-
-
-    private static CollectionsFragment instance = new CollectionsFragment();
 
 
     public static CollectionsFragment newInstance(String mode) {
@@ -66,10 +59,9 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        DaggerFragmentComponent.builder().fragmentModule(new FragmentModule())
+        String mode = getArguments().toString();
+        DaggerFragmentComponent.builder().fragmentModule(new FragmentModule(mode))
                 .build().injectPresenter(this);
-        presenter = FragmentInjector.createPresenter(getArguments().getString(MAIN_MODE));
         presenter.subscribe(this);
         showProgress(false);
 
@@ -153,9 +145,7 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     public String getString(Integer strResId) {
         return Objects.requireNonNull(getContext()).getString(strResId);
     }
-    public static CollectionsFragment getInstance() {
-        return instance;
-    }
+
 
 
 }

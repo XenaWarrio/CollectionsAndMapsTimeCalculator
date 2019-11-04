@@ -17,6 +17,7 @@ public interface CollectionFragmentContract {
         void calculationStopped();
          void setThreadsError( String error);
          void setElemntsError( String error);
+         String getString(Integer strResId);
     }
 
 

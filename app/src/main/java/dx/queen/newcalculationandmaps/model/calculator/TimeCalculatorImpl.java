@@ -8,9 +8,6 @@ import dx.queen.newcalculationandmaps.dto.task.TaskData;
 
 public class TimeCalculatorImpl implements TimeCalculator {
 
-    // 1. fix this method
-    // 2. launch on device checkout that everything is ok (it's not ok:) )
-    // 3. questions? in slack. bye!
 
     @Override
     public void execAndSetupTime(TaskData td) {

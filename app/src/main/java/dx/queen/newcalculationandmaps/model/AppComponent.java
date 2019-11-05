@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps.ui.fragments;
+package dx.queen.newcalculationandmaps.model;
 
 import javax.inject.Named;
 
@@ -15,4 +15,5 @@ public interface AppComponent {
 
     @Named("Collections")
     TaskSupplier injectColletionsTaskSupplier();
+
 }

@@ -7,13 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -21,10 +25,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.dto.CalculationResult;
-import dx.queen.newcalculationandmaps.mvp.MvpFragment;
 
-public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.Presenter>
-        implements CollectionFragmentContract.View, CompoundButton.OnCheckedChangeListener {
+public class CollectionsFragment extends Fragment implements CollectionFragmentContract.View, CompoundButton.OnCheckedChangeListener {
 
     private static String MAIN_MODE = "mode";
 
@@ -45,6 +47,10 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     private final CollectionAdapter adapter = new CollectionAdapter();
     private Unbinder unbinder;
 
+    @Inject
+    CollectionFragmentContract.Presenter presenter;
+
+
 
 
     public static CollectionsFragment newInstance(String mode) {
@@ -59,7 +65,7 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String mode = getArguments().toString();
+        String mode = getArguments().getString(MAIN_MODE);
         DaggerFragmentComponent.builder().fragmentModule(new FragmentModule(mode))
                 .build().injectPresenter(this);
         presenter.subscribe(this);
@@ -144,6 +150,30 @@ public class CollectionsFragment extends MvpFragment<CollectionFragmentContract.
     @Override
     public String getString(Integer strResId) {
         return Objects.requireNonNull(getContext()).getString(strResId);
+    }
+
+//
+//       @Override
+//   public void onStart() {
+//        super.onStart();
+//        presenter.subscribe(this);
+//    }
+//
+    @Override
+    public void onStop() {
+        presenter.unsubscribe();
+        super.onStop();
+    }
+//
+//    @Override
+//    public void onDestroy() {
+//        presenter.unsubscribe();
+//        super.onDestroy();
+//    }
+
+    @Override
+    public void showToast(int msgResId) {
+        Toast.makeText(getActivity(), msgResId, Toast.LENGTH_LONG).show();
     }
 
 

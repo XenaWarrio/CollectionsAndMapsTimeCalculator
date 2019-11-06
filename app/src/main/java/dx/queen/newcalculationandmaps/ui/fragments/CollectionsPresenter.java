@@ -3,22 +3,26 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 
 import android.content.res.Resources;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
+import dx.queen.newcalculationandmaps.dto.CalculationResult;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentContract.View> implements CollectionFragmentContract.Presenter {
 
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
-    private ExecutorService executorPool;
+    ExecutorService executorPool;
 
 
 
@@ -59,35 +63,70 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);
+        //final CompositeDisposable disposable = new CompositeDisposable();
 
 
         final List<TaskData> taskDatas = tasksSupplier.getTasks();
-        stopCalculation(false); // false means stop pool, but don't update ui
-
         view.showProgress(true);
-        executorPool = Executors.newFixedThreadPool(threadsInt);
-        for (TaskData td : new ArrayList<>(taskDatas)) {
-            executorPool.submit(() -> {
-                td.fill(elementsInt);
-                calculator.execAndSetupTime(td);
+         executorPool = Executors.newFixedThreadPool(threadsInt);
+       // TaskData taskData;
 
-                taskDatas.remove(td);
-                if (view != null) {
-                    view.setupResult(td.getResult());
-                }
+        stopCalculation( false); // false means stop pool, but don't update ui
 
-                if (taskDatas.isEmpty()) {
-                    if (view != null) {
-                        view.showToast(R.string.calculation_finished);
-                    }
-                    stopCalculation(false);
-                }
-            });
-        }
+        //Observable<Integer> observables = Observable.range(1,elementsInt);
+
+
+        Observable.fromIterable(taskDatas)
+                .subscribeOn(Schedulers.from(executorPool))
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(taskData-> {
+                    taskData.fill(elementsInt);
+                    calculator.execAndSetupTime(taskData);
+                    CalculationResult data = taskData.getResult();
+                    return data;
+
+                })
+                .subscribe(calculationResult -> view == null ? view.setupResult(calculationResult));
+
+
+
+
+
+
+
+
+
+
+//                just(observables)
+//                .subscribeOn(Schedulers.from(Executors.newFixedThreadPool(threadsInt)))
+//                .forEach(td.fill(elementsInt) , calculator.execAndSetupTime(td) , taskDatas.remove(td));
+//                .subscribe();
+
+
+//        view.showProgress(true);
+//        executorPool = Executors.newFixedThreadPool(threadsInt);
+//        for (TaskData td : new ArrayList<>(taskDatas)) {
+//            executorPool.submit(() -> {
+//                td.fill(elementsInt);
+//                calculator.execAndSetupTime(td);
+//
+//                taskDatas.remove(td);
+//                if (view != null) {
+//                    view.setupResult(td.getResult());
+//                }
+//
+//                if (taskDatas.isEmpty()) {
+//                    if (view != null) {
+//                        view.showToast(R.string.calculation_finished);
+//                    }
+//                    stopCalculation(false);
+//                }
+//            });
+//        }
     }
 
     @Override
-    public void stopCalculation(boolean showMsg) {
+    public void stopCalculation( boolean showMsg) {
         if (executorPool == null) return;
         executorPool.shutdownNow();
         executorPool = null;

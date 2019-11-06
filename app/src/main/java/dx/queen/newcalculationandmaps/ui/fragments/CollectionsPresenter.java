@@ -8,23 +8,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
-import dx.queen.newcalculationandmaps.dto.CalculationResult;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentContract.View> implements CollectionFragmentContract.Presenter {
 
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
-    ExecutorService executorPool;
-
-
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -45,63 +40,42 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
-        if(threads.isEmpty()){
+        if (threads.isEmpty()) {
             view.setThreadsError(view.getString(R.string.threads_empty));
             Resources.getSystem().getString(R.string.threads_empty);
-        } else if("0".equals(threads)) {
+        } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
         } else {
             view.setThreadsError(null);
         }
-        if(threads.isEmpty()){
+        if (threads.isEmpty()) {
             view.setElemntsError(view.getString(R.string.elements_empty));
-        } else if("0".equals(threads)) {
+        } else if ("0".equals(threads)) {
             view.setElemntsError(view.getString(R.string.threads_zero));
         } else {
             view.setElemntsError(null);
         }
 
+        view.showProgress(true);
+
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);
-        //final CompositeDisposable disposable = new CompositeDisposable();
-
-
+        // final CompositeDisposable disposable = new CompositeDisposable();
         final List<TaskData> taskDatas = tasksSupplier.getTasks();
-        view.showProgress(true);
-         executorPool = Executors.newFixedThreadPool(threadsInt);
-       // TaskData taskData;
-
-        stopCalculation( false); // false means stop pool, but don't update ui
-
-        //Observable<Integer> observables = Observable.range(1,elementsInt);
-
+        final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
+        stopCalculation(false); // false means stop pool, but don't update ui
 
         Observable.fromIterable(taskDatas)
                 .subscribeOn(Schedulers.from(executorPool))
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(taskData-> {
+                .map(taskData -> {
                     taskData.fill(elementsInt);
                     calculator.execAndSetupTime(taskData);
-                    CalculationResult data = taskData.getResult();
-                    return data;
-
+                    return taskData.getResult();
                 })
-                .subscribe(calculationResult -> view == null ? view.setupResult(calculationResult));
-
-
-
-
-
-
-
-
-
-
-//                just(observables)
-//                .subscribeOn(Schedulers.from(Executors.newFixedThreadPool(threadsInt)))
-//                .forEach(td.fill(elementsInt) , calculator.execAndSetupTime(td) , taskDatas.remove(td));
-//                .subscribe();
-
+                .subscribe(calculationResult -> {
+                    if (view != null) view.setupResult(calculationResult);
+                });
 
 //        view.showProgress(true);
 //        executorPool = Executors.newFixedThreadPool(threadsInt);
@@ -126,10 +100,10 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     }
 
     @Override
-    public void stopCalculation( boolean showMsg) {
-        if (executorPool == null) return;
-        executorPool.shutdownNow();
-        executorPool = null;
+    public void stopCalculation(boolean showMsg) {
+        // if (executorPool == null) return;
+        // executorPool.shutdownNow();
+        // executorPool = null;
 
         if (view != null) {
             view.calculationStopped();

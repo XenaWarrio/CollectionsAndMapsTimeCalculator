@@ -21,7 +21,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
-    CompositeDisposable compositeDisposable;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -58,11 +58,8 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElemntsError(null);
         }
 
-
-
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);
-        compositeDisposable = new CompositeDisposable();
         final List<TaskData> taskDatas = tasksSupplier.getTasks();
         final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
 
@@ -79,31 +76,14 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                 .subscribe(calculationResult -> {
                     if (view != null) view.setupResult(calculationResult);
                 });
-
-//        view.showProgress(true);
-//        executorPool = Executors.newFixedThreadPool(threadsInt);
-//        for (TaskData td : new ArrayList<>(taskDatas)) {
-//            executorPool.submit(() -> {
-//                td.fill(elementsInt);
-//                calculator.execAndSetupTime(td);
-//
-//                taskDatas.remove(td);
-//                if (view != null) {
-//                    view.setupResult(td.getResult());
-//                }
-//
-//                if (taskDatas.isEmpty()) {
-//                    if (view != null) {
-//                        view.showToast(R.string.calculation_finished);
-//                    }
-//                    stopCalculation(false);
-//                }
-//            });
-//        }
     }
 
     @Override
     public void stopCalculation( boolean showMsg) {
+        // if (executorPool == null) return;
+        // executorPool.shutdownNow();
+        // executorPool = null;
+
         if (view != null) {
             compositeDisposable.dispose();
             view.calculationStopped();

@@ -2,6 +2,7 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
                 .build().injectPresenter(this);
         presenter.subscribe(this);
         showProgress(false);
+        Log.d("Erroro", "OnCreateAfterShowProgressFalse");
+
 
     }
 
@@ -100,6 +103,8 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void onDestroy() {
         presenter.stopCalculation(false);
+        Log.d("Erroro", "OnDestroyStopCalculationFalse");
+
         unbinder.unbind();
         super.onDestroy();
     }
@@ -109,8 +114,13 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
         if (isChecked) {
             //start.setTextOn(start.getTextOn());
             presenter.startCalculation(getText(countOfElement), getText(countOfThreads));
+            Log.d("Erroro", "OnchekedTrue");
+
         } else {
+            //showProgress(false);
             presenter.stopCalculation(true);
+            Log.d("Erroro", "OnchekedFAlse");
+
         }
     }
 
@@ -131,11 +141,15 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void showProgress(boolean mode) {
         adapter.showProgress(mode);
+        Log.d("Erroro", "ShowProgressFragment");
+
     }
 
     @Override
     public void calculationStopped() {
         start.setChecked(false);
+        Log.d("Erroro", "CalculationStopped START.SETCHECKED");
+
     }
 
     @Override

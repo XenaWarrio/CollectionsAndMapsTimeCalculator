@@ -1,5 +1,6 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     void showProgress(boolean mode) {
         for (int i = 0; i < items.size(); i++) {
             items.get(i).setShowProgress(mode);
+            Log.d("Erroro", "in collection adapter " + items.get(i).isShowProgress());
+
         }
         notifyDataSetChanged();
     }
@@ -71,9 +74,16 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         }
 
         void bind(CalculationResult item) {
+            Log.d("Erroro", "bind" + item.isShowProgress());
+
             final String s = nameAndTime.getContext().getString(item.getRes()) + (item.isTimeDefault() ? "-:-" : (item.time + " ms"));
             nameAndTime.setText(s);
-            progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.INVISIBLE);
+            if (item.isShowProgress()){
+                progressBar.setVisibility(View.VISIBLE);
+            }else {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+            //progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }

@@ -2,6 +2,7 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -62,13 +63,20 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         final int elementsInt = Integer.valueOf(threads);
         final List<TaskData> taskDatas = tasksSupplier.getTasks();
         final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
-
-        stopCalculation(false); // false means stop pool, but don't update ui
         view.showProgress(true);
+        Log.d("Erroro", "startCalculation");
+
+        stopCalculation(false);
+        Log.d("Erroro", "startCalculation STOPCALCULATION");
+        // false means stop pool, but don't update ui
+
         Observable.fromIterable(taskDatas)
                 .subscribeOn(Schedulers.from(executorPool))
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(taskData -> {
+                    Log.d("Erroro", "startCalculation RX");
+
+                    //Thread.sleep(1000);
                     taskData.fill(elementsInt);
                     calculator.execAndSetupTime(taskData);
                     return taskData.getResult();
@@ -79,18 +87,33 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     }
 
     @Override
-    public void stopCalculation( boolean showMsg) {
-        // if (executorPool == null) return;
-        // executorPool.shutdownNow();
-        // executorPool = null;
+    public void stopCalculation(boolean showMsg) {
+        Log.d("Erroro",  "STOPCALCULATION METHOD");
 
+        if (compositeDisposable.size() != 0) {
+            Log.d("Erroro",  "compositeDisposable size is " + compositeDisposable.size());
+
+            compositeDisposable.clear();
+        }else {
+            return;
+        }
+        Log.d("Erroro", "stopCalculationFirstLine");
         if (view != null) {
-            compositeDisposable.dispose();
+            Log.d("Erroro", "stopCalculationViewNotNull");
+
+            view.showProgress(false);
+            Log.d("Erroro", "stopCalculationShowProgress");
+
             view.calculationStopped();
+            Log.d("Erroro", "stopCalculationCalculationStop");
+
             if (showMsg) {
                 view.showToast(R.string.calculation_stopped);
+                Log.d("Erroro", "stopCalculationShowToast"); //maybe here should be showprogress , should change on true
+
             }
         }
+
     }
 }
 

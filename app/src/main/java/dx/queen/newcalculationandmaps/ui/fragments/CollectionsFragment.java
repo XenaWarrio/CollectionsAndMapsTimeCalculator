@@ -107,6 +107,7 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
+            //start.setTextOn(start.getTextOn());
             presenter.startCalculation(getText(countOfElement), getText(countOfThreads));
         } else {
             presenter.stopCalculation(true);
@@ -159,12 +160,12 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
 //        presenter.subscribe(this);
 //    }
 //
-    @Override
-    public void onStop() {
-        presenter.unsubscribe();
-        super.onStop();
-    }
-//
+//    @Override
+//    public void onStop() {
+//        presenter.unsubscribe();
+//        super.onStop();
+//    }
+////
 //    @Override
 //    public void onDestroy() {
 //        presenter.unsubscribe();

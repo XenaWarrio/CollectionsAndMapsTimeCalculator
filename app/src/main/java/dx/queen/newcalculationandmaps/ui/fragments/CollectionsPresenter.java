@@ -14,12 +14,14 @@ import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentContract.View> implements CollectionFragmentContract.Presenter {
 
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
+    CompositeDisposable compositeDisposable;
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -56,15 +58,16 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElemntsError(null);
         }
 
-        view.showProgress(true);
+
 
         final int threadsInt = Integer.valueOf(threads);
         final int elementsInt = Integer.valueOf(threads);
-        // final CompositeDisposable disposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
         final List<TaskData> taskDatas = tasksSupplier.getTasks();
         final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
-        stopCalculation(false); // false means stop pool, but don't update ui
 
+        stopCalculation(false); // false means stop pool, but don't update ui
+        view.showProgress(true);
         Observable.fromIterable(taskDatas)
                 .subscribeOn(Schedulers.from(executorPool))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -100,12 +103,9 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     }
 
     @Override
-    public void stopCalculation(boolean showMsg) {
-        // if (executorPool == null) return;
-        // executorPool.shutdownNow();
-        // executorPool = null;
-
+    public void stopCalculation( boolean showMsg) {
         if (view != null) {
+            compositeDisposable.dispose();
             view.calculationStopped();
             if (showMsg) {
                 view.showToast(R.string.calculation_stopped);

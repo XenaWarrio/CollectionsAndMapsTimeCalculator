@@ -70,21 +70,26 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         Log.d("Erroro", "startCalculation STOPCALCULATION");
         // false means stop pool, but don't update ui
 
-        Observable.fromIterable(taskDatas)
+        compositeDisposable.add(Observable.fromIterable(taskDatas)
                 .subscribeOn(Schedulers.from(executorPool))
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(v ->{
+                    if(view != null) view.showProgress(true);})
+                .doFinally(() ->{
+                if(view != null) view.showProgress(false);})
                 .map(taskData -> {
-                    Log.d("Erroro", "startCalculation RX");
-
-                    //Thread.sleep(1000);
+                    Log.d("Erroro", "MAP");
+                    Thread.sleep(300);
                     taskData.fill(elementsInt);
                     calculator.execAndSetupTime(taskData);
                     return taskData.getResult();
                 })
                 .subscribe(calculationResult -> {
                     if (view != null) view.setupResult(calculationResult);
-                });
+                }));
+
     }
+
 
     @Override
     public void stopCalculation(boolean showMsg) {

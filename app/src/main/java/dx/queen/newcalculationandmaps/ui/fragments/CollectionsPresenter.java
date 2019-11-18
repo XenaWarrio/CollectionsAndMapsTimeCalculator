@@ -23,6 +23,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private boolean flag = true;
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -46,60 +47,77 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         if (threads.isEmpty()) {
             view.setThreadsError(view.getString(R.string.threads_empty));
             Resources.getSystem().getString(R.string.threads_empty);
+            flag = false;
         } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
+            flag = false;
+
         } else {
             view.setThreadsError(null);
+            flag = false;
+
         }
-        if (threads.isEmpty()) {
+
+        if (elements.isEmpty()) {
             view.setElemntsError(view.getString(R.string.elements_empty));
+            flag = false;
+
         } else if ("0".equals(threads)) {
             view.setElemntsError(view.getString(R.string.threads_zero));
+            flag = false;
+
         } else {
             view.setElemntsError(null);
+            flag = false;
+
         }
 
-        final int threadsInt = Integer.valueOf(threads);
-        final int elementsInt = Integer.valueOf(threads);
-        final List<TaskData> taskDatas = tasksSupplier.getTasks();
-        final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
-        view.showProgress(true);
-        Log.d("Erroro", "startCalculation");
+        if (flag) {
 
-        stopCalculation(false);
-        Log.d("Erroro", "startCalculation STOPCALCULATION");
-        // false means stop pool, but don't update ui
+            final int threadsInt = Integer.valueOf(threads);
+            final int elementsInt = Integer.valueOf(threads);
+            final List<TaskData> taskDatas = tasksSupplier.getTasks();
+            final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
+            view.showProgress(true);
+            Log.d("Erroro", "startCalculation");
 
-        compositeDisposable.add(Observable.fromIterable(taskDatas)
-                .subscribeOn(Schedulers.from(executorPool))
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(v ->{
-                    if(view != null) view.showProgress(true);})
-                .doFinally(() ->{
-                if(view != null) view.showProgress(false);})
-                .map(taskData -> {
-                    Log.d("Erroro", "MAP");
-                    Thread.sleep(300);
-                    taskData.fill(elementsInt);
-                    calculator.execAndSetupTime(taskData);
-                    return taskData.getResult();
-                })
-                .subscribe(calculationResult -> {
-                    if (view != null) view.setupResult(calculationResult);
-                }));
+            stopCalculation(false);
+            Log.d("Erroro", "startCalculation STOPCALCULATION");
+            // false means stop pool, but don't update ui
 
+            compositeDisposable.add(Observable.fromIterable(taskDatas)
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.from(executorPool))
+                    .doOnSubscribe(v -> {
+                        if (view != null) view.showProgress(true);
+                    })
+                    .doFinally(() -> {
+                        stopCalculation(true);
+                    })
+                    .map(taskData -> {
+                        Log.d("Erroro", "MAP");
+                        Thread.sleep(300);
+                        taskData.fill(elementsInt);
+                        calculator.execAndSetupTime(taskData);
+                        return taskData.getResult();
+                    })
+                    .subscribe(calculationResult -> {
+                        if (view != null) view.setupResult(calculationResult);
+                    }));
+        }
     }
 
 
     @Override
     public void stopCalculation(boolean showMsg) {
-        Log.d("Erroro",  "STOPCALCULATION METHOD");
+        Log.d("Erroro", "STOPCALCULATION METHOD");
 
         if (compositeDisposable.size() != 0) {
-            Log.d("Erroro",  "compositeDisposable size is " + compositeDisposable.size());
+            Log.d("Erroro", "compositeDisposable size is " + compositeDisposable.size());
 
             compositeDisposable.clear();
-        }else {
+            Log.d("Erory", String.valueOf(compositeDisposable.size()));
+        } else {
             return;
         }
         Log.d("Erroro", "stopCalculationFirstLine");

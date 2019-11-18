@@ -154,11 +154,15 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
 
     @Override
     public void setThreadsError(String error) {
+        countOfThreads.requestFocus();
         countOfThreads.setError(error);
     }
 
     @Override
     public void setElemntsError(String error) {
+
+        countOfElement.requestFocus();
+
         countOfElement.setError(error);
     }
 

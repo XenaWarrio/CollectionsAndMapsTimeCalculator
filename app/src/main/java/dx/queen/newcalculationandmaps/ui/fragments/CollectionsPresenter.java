@@ -23,7 +23,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private boolean flag = true;
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -44,6 +43,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
+       boolean flag = true;
         if (threads.isEmpty()) {
             view.setThreadsError(view.getString(R.string.threads_empty));
             Resources.getSystem().getString(R.string.threads_empty);

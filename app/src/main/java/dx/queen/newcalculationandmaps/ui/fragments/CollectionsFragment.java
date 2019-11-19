@@ -114,12 +114,10 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
         if (isChecked) {
             //start.setTextOn(start.getTextOn());
             presenter.startCalculation(getText(countOfElement), getText(countOfThreads));
-            Log.d("Erroro", "OnchekedTrue");
 
         } else {
             //showProgress(false);
             presenter.stopCalculation(true);
-            Log.d("Erroro", "OnchekedFAlse");
 
         }
     }
@@ -141,29 +139,29 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void showProgress(boolean mode) {
         adapter.showProgress(mode);
-        Log.d("Erroro", "ShowProgressFragment");
 
     }
 
     @Override
     public void calculationStopped() {
         start.setChecked(false);
-        Log.d("Erroro", "CalculationStopped START.SETCHECKED");
 
     }
 
     @Override
     public void setThreadsError(String error) {
-        countOfThreads.requestFocus();
         countOfThreads.setError(error);
     }
 
     @Override
     public void setElemntsError(String error) {
 
-        countOfElement.requestFocus();
-
         countOfElement.setError(error);
+    }
+
+    @Override
+    public void btnToStart() {
+        start.setTextOff(start.getTextOn());
     }
 
     @Override

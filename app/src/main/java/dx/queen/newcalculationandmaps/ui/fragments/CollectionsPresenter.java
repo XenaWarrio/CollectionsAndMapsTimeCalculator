@@ -1,7 +1,6 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
 
-import android.content.res.Resources;
 import android.util.Log;
 
 import java.util.List;
@@ -43,17 +42,17 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
+
        boolean flag = true;
         if (threads.isEmpty()) {
             view.setThreadsError(view.getString(R.string.threads_empty));
-            Resources.getSystem().getString(R.string.threads_empty);
             flag = false;
         } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
             flag = false;
 
         } else {
-            view.setThreadsError(null);
+            view.setThreadsError("null");
             flag = false;
 
         }
@@ -62,17 +61,17 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElemntsError(view.getString(R.string.elements_empty));
             flag = false;
 
-        } else if ("0".equals(threads)) {
+        } else if ("0".equals(elements)) {
             view.setElemntsError(view.getString(R.string.threads_zero));
             flag = false;
 
         } else {
-            view.setElemntsError(null);
+            view.setElemntsError("null");
             flag = false;
 
         }
 
-        if (flag) {
+        if (!flag) {
 
             final int threadsInt = Integer.valueOf(threads);
             final int elementsInt = Integer.valueOf(threads);
@@ -104,6 +103,8 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                     .subscribe(calculationResult -> {
                         if (view != null) view.setupResult(calculationResult);
                     }));
+
+            view.btnToStart();
         }
     }
 

@@ -13,7 +13,6 @@ import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -141,8 +140,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     }
 
-    Scheduler getSchedulerIo(){
-        return Schedulers.io();
-    }
+
 }
 

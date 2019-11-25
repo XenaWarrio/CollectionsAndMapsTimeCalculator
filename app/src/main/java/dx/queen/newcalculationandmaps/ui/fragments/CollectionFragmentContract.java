@@ -9,11 +9,12 @@ public interface CollectionFragmentContract {
 
     interface View extends MvpContract.View {
         void setItems(List<CalculationResult> results);
+        List<CalculationResult> getItems();
 
         void setupResult(CalculationResult result);
 
         void showProgress(boolean show);
-
+        void setError(int someint);
         void calculationStopped();
          void setThreadsError( String error);
          void setElemntsError( String error);

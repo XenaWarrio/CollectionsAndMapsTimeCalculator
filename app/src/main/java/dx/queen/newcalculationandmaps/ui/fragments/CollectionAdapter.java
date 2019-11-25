@@ -42,6 +42,10 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         notifyDataSetChanged();
     }
 
+    List<CalculationResult> getItems(){
+        return items;
+    }
+
     void showProgress(boolean mode) {
         for (int i = 0; i < items.size(); i++) {
             items.get(i).setShowProgress(mode);

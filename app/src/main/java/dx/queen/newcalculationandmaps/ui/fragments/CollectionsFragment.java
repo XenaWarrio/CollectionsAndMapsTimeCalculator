@@ -132,6 +132,11 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     }
 
     @Override
+    public List<CalculationResult> getItems() {
+        return adapter.getItems();
+    }
+
+    @Override
     public void setupResult(CalculationResult result) {
         handler.post(() -> adapter.updateItem(result)); // multithreading!!
     }
@@ -139,6 +144,11 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void showProgress(boolean mode) {
         adapter.showProgress(mode);
+
+    }
+
+    @Override
+    public void setError(int someint) {
 
     }
 

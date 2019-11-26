@@ -43,7 +43,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
     @Override
     public void startCalculation(String elements, String threads) {
 
-       boolean flag = true;
+        boolean flag = true;
         if (threads.isEmpty()) {
             view.setThreadsError(view.getString(R.string.threads_empty));
             flag = false;

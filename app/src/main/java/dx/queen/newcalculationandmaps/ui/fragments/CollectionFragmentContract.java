@@ -8,18 +8,25 @@ import dx.queen.newcalculationandmaps.mvp.MvpContract;
 public interface CollectionFragmentContract {
 
     interface View extends MvpContract.View {
-        void setItems(List<CalculationResult> results);
         List<CalculationResult> getItems();
+
+        void setItems(List<CalculationResult> results);
 
         void setupResult(CalculationResult result);
 
         void showProgress(boolean show);
-        void setError(int someint);
+
+        void setError(int number);
+
         void calculationStopped();
-         void setThreadsError( String error);
-         void setElemntsError( String error);
-         void btnToStart();
-         String getString(Integer strResId);
+
+        void setThreadsError(String error);
+
+        void setElemntsError(String error);
+
+        void btnToStart();
+
+        String getString(Integer strResId);
     }
 
 

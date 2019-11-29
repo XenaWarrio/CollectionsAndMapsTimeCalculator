@@ -52,7 +52,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
             flag = false;
-
         }
         else{
             view.setThreadsError(null);

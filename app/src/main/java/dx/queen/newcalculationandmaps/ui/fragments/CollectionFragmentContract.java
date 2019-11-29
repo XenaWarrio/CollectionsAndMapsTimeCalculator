@@ -10,8 +10,6 @@ public interface CollectionFragmentContract {
     interface View extends MvpContract.View {
         List<CalculationResult> getItems();
 
-
-
         void setupResult(CalculationResult result);
 
         void showProgress(boolean show);
@@ -20,7 +18,7 @@ public interface CollectionFragmentContract {
 
         void setThreadsError(String error);
 
-        void setElemntsError(String error);
+        void setElementsError(String error);
 
        void setItems(List<CalculationResult> result);
 

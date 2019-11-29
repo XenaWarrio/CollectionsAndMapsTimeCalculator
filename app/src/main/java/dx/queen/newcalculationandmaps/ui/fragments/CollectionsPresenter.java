@@ -4,7 +4,6 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 import android.util.Log;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
@@ -14,6 +13,7 @@ import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -58,15 +58,15 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         }
 
         if (TextUtils.isEmpty(elements)) {
-            view.setElemntsError(view.getString(R.string.elements_empty));
+            view.setElementsError(view.getString(R.string.elements_empty));
             flag = false;
 
         } else if ("0".equals(elements)) {
-            view.setElemntsError(view.getString(R.string.elements_zero));
+            view.setElementsError(view.getString(R.string.elements_zero));
             flag = false;
 
         }else {
-            view.setElemntsError(null);
+            view.setElementsError(null);
         }
 
         if (!flag) {
@@ -74,7 +74,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             final int threadsInt = Integer.valueOf(threads);
             final int elementsInt = Integer.valueOf(threads);
             final List<TaskData> taskDatas = tasksSupplier.getTasks();
-            final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
+            final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
             view.showProgress(true);
             Log.d("Erroro", "startCalculation");
 
@@ -84,7 +84,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
             compositeDisposable.add(Observable.fromIterable(taskDatas)
                     .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(Schedulers.from(executorPool))
+                    .observeOn(schedulers)
                     .doOnSubscribe(v -> {
                         if (view != null) view.showProgress(true);
                     })

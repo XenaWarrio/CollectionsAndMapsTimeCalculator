@@ -80,7 +80,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     public void testEmptyElements(){
         presenter.startCalculation(" ", "5");
 
-        Mockito.verify(view).setElemntsError(view.getString(R.string.elements_empty));
+        Mockito.verify(view).setElementsError(view.getString(R.string.elements_empty));
         verifyNoMore();
     }
 
@@ -96,7 +96,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     public void testZeroElements(){
         presenter.startCalculation("0", "5");
 
-        Mockito.verify(view).setElemntsError(view.getString(R.string.elements_zero));
+        Mockito.verify(view).setElementsError(view.getString(R.string.elements_zero));
         verifyNoMore();
     }
 
@@ -112,7 +112,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     public void testNullElements(){
         presenter.startCalculation("", "5");
 
-        Mockito.verify(view).setElemntsError("null");
+        Mockito.verify(view).setElementsError("null");
         verifyNoMore();
     }
 
@@ -128,7 +128,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
         Mockito.when(view.getString(R.string.threads_zero)).thenReturn("Threads can`t be zero");
 
-        verify(view, Mockito.times(2)).setElemntsError(null);
+        verify(view, Mockito.times(2)).setElementsError(null);
         verify(view).showProgress(true);
         verify(view).setItems(ac.capture());
         verify(tasksSupplier).getTasks();

@@ -11,16 +11,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.util.List;
-import java.util.Objects;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -160,7 +161,7 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     }
 
     @Override
-    public void setElemntsError(String error) {
+    public void setElementsError(String error) {
 
         countOfElement.setError(error);
     }

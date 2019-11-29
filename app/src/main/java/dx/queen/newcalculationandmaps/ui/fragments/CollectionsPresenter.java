@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
+import dx.queen.newcalculationandmaps.TextUtils;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
@@ -16,6 +17,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+
+
 
 public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentContract.View> implements CollectionFragmentContract.Presenter {
 
@@ -42,9 +45,8 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
-
         boolean flag = true;
-        if (threads.isEmpty()) {
+        if (TextUtils.isEmpty(threads)) {
             view.setThreadsError(view.getString(R.string.threads_empty));
             flag = false;
         } else if ("0".equals(threads)) {
@@ -52,8 +54,11 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             flag = false;
 
         }
+        else{
+            view.setThreadsError(null);
+        }
 
-        if (elements.isEmpty()) {
+        if (TextUtils.isEmpty(elements)) {
             view.setElemntsError(view.getString(R.string.elements_empty));
             flag = false;
 
@@ -61,6 +66,8 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElemntsError(view.getString(R.string.elements_zero));
             flag = false;
 
+        }else {
+            view.setElemntsError(null);
         }
 
         if (!flag) {

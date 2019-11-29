@@ -147,10 +147,6 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
 
     }
 
-    @Override
-    public void setError(int someint) {
-
-    }
 
     @Override
     public void calculationStopped() {

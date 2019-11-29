@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -12,28 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import dx.queen.newcalculationandmaps.R;
+import dx.queen.newcalculationandmaps.dto.CalculationResult;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.TestSubscriber;
 
 import static android.hardware.camera2.params.BlackLevelPattern.COUNT;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,10 +48,9 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     TimeCalculator calculator;
 
     @Mock
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    @Mock
     CollectionFragmentContract.View view;
+
+
 
 
     @Mock
@@ -72,6 +70,8 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(
                 (Callable<Scheduler> schedulerCallable) -> Schedulers.trampoline());
 
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+
     }
 
     @Test
@@ -86,6 +86,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     public void testEmptyThreads(){
         presenter.startCalculation("5", " ");
         Mockito.verify(view).setThreadsError(view.getString(R.string.threads_empty));
+        Mockito.when(view.getString(R.string.threads_empty)).thenReturn("Treads can`t be empty");
         verifyNoMore();
 
     }
@@ -133,52 +134,36 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     @Test
     public void startCalculation(){
         List<TaskData> taskDatas = getFakesTasks(ELEMENTS_INT);
-        assertNotEquals(taskDatas, null);
 
+        ArgumentCaptor<List<CalculationResult>> ac = forClass(List.class);
+        verify(view).setItems(ac.capture());
+
+        Mockito.when(tasksSupplier.getTasks()).thenReturn(taskDatas);
+
+        presenter.startCalculation(String.format("%d", COUNT), String.format("%d", THREADS_INT));
+
+        Mockito.when(view.getString(R.string.threads_zero)).thenReturn("Threads can`t be zero");
+
+
+        verify(view, never()).setElemntsError(any());
+        verify(view).showProgress(true);
+        verify(view).setItems(ac.capture());
+        verify(tasksSupplier).getTasks();
         for (TaskData task : taskDatas) {
             verify(task).fill(COUNT);
         }
 
-        Mockito.when(tasksSupplier.getTasks()).thenReturn(taskDatas);
-        Mockito.verify(view).showProgress(true);
+        //ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
+        //verify(calculator).execAndSetupTime(argument.capture(any()));
 
-        executorPool = Executors.newFixedThreadPool(ELEMENTS_INT);
-        Mockito.verify(presenter).stopCalculation(false);
-
-        Observable<TaskData> observable = Observable.fromIterable(taskDatas);
-
-        TestSubscriber<TaskData> subscriber = new TestSubscriber<>();
-        subscriber.assertSubscribed();
-
-        observable.subscribe((Observer<? super TaskData>) subscriber);
-
-        observable.delay(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.from(executorPool))
-                .doOnSubscribe(v ->{
-                    assertNotNull(view);
-                    Mockito.verify(view).showProgress(true);
-                })
-                .doFinally(()->{
-                    Mockito.verify(presenter).stopCalculation(true);
-                })
-                .map(taskData1 -> {
-                    wait(300);
-                    Mockito.verify(taskData1).fill(ELEMENTS_INT);
-                    Mockito.verify(calculator).execAndSetupTime(taskData1);
-                    assertNotNull(taskData1.getResult());
-                    return taskData1.getResult();
-                })
-                .subscribe(calculationResult -> {
-                    assertNotNull(view);
-                    Mockito.verify(view).setupResult(calculationResult);
-                });
-
-        subscriber.assertValues(taskDatas.get(1));
-        subscriber.assertComplete();
-
-        Mockito.verify(view).btnToStart();
+        verify(calculator, times(getFakesTasks(COUNT).size())).execAndSetupTime(any());
+        verify(view, times(getFakesTasks(COUNT).size())).setupResult(any());
+        verify(view).calculationStopped();
+        verify(view).btnToStart();
 
         verifyNoMore();
+
+
 
 
     }
@@ -191,7 +176,6 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         assertTrue(presenter.getCollectionsCount() == TASK_COUNT);
 
         Mockito.verify(tasksSupplier).getCollectionCount();
-        assertEquals(presenter.getCollectionsCount(), ELEMENTS_INT);
         verifyNoMore();
 
 
@@ -201,9 +185,8 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     @Test
     public void getInitialResults() {
         assertNotNull(view);
-        Mockito.verify(view).setItems(tasksSupplier.getInitialResults());
         assertEquals(view.getItems() , tasksSupplier.getInitialResults());
-        verifyNoMore();
+
     }
 
 
@@ -223,12 +206,10 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     }
 
     public void verifyNoMore(){
-        Mockito.verifyNoMoreInteractions(presenter);
         Mockito.verifyNoMoreInteractions(calculator);
         Mockito.verifyNoMoreInteractions(tasksSupplier);
         Mockito.verifyNoMoreInteractions(view);
         Mockito.verifyNoMoreInteractions(executorPool);
-        Mockito.verifyNoMoreInteractions(compositeDisposable);
 
     }
 }

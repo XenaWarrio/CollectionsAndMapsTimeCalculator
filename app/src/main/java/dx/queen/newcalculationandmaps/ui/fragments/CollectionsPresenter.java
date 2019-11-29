@@ -51,10 +51,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setThreadsError(view.getString(R.string.threads_zero));
             flag = false;
 
-        } else {
-            view.setThreadsError("null");
-            flag = false;
-
         }
 
         if (elements.isEmpty()) {
@@ -63,10 +59,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
         } else if ("0".equals(elements)) {
             view.setElemntsError(view.getString(R.string.elements_zero));
-            flag = false;
-
-        } else {
-            view.setElemntsError("null");
             flag = false;
 
         }

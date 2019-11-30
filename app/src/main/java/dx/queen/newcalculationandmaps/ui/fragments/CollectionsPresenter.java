@@ -74,7 +74,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             final int elementsInt = Integer.parseInt(elements);// может экстрасенсы знают ответ...
             final List<TaskData> taskDatas = tasksSupplier.getTasks();
             final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
-            view.showProgress(true);
 
             stopCalculation(false);
 
@@ -84,9 +83,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                     .doOnSubscribe(v -> {
                         if (view != null) view.showProgress(true);
                     })
-                    .doFinally(() -> {
-                        stopCalculation(true);
-                    })
+                    .doFinally(() -> stopCalculation(true))
                     .map(taskData -> {
                         Thread.sleep(300);
                         taskData.fill(elementsInt);

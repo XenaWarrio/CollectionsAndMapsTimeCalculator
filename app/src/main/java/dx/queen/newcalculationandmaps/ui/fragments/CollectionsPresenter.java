@@ -53,6 +53,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         }
         else{
             view.setThreadsError(null);
+
         }
 
         if (TextUtils.isEmpty(elements)) {
@@ -67,23 +68,12 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElementsError(null);
         }
 
-        if (!flag) {
+        if (flag) {
 
-//            try
-//            {
-//                int i = Integer.parseInt(s.trim());
-//
-//                System.out.println("int i = " + i);
-//            }
-//            catch (NumberFormatException nfe)
-//            {
-//                System.out.println("NumberFormatException: " + nfe.getMessage());
-//            }
-
-           // final int threadsInt = Integer.parseInt(threads);
-            //final int elementsInt = Integer.parseInt(elements);
+            final int threadsInt = Integer.parseInt(threads);// НУ ПОЧЕМУ??
+            final int elementsInt = Integer.parseInt(elements);// может экстрасенсы знают ответ...
             final List<TaskData> taskDatas = tasksSupplier.getTasks();
-            final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(Integer.parseInt(threads)));
+            final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
             view.showProgress(true);
 
             stopCalculation(false);
@@ -99,7 +89,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                     })
                     .map(taskData -> {
                         Thread.sleep(300);
-                        taskData.fill(Integer.parseInt(elements));
+                        taskData.fill(elementsInt);
                         calculator.execAndSetupTime(taskData);
                         return taskData.getResult();
                     })

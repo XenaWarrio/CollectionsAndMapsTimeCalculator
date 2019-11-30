@@ -160,7 +160,7 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     }
 
     @Override
-    public void setElemntsError(String error) {
+    public void setElementsError(String error) {
 
         countOfElement.setError(error);
     }

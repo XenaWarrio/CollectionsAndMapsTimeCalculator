@@ -50,34 +50,43 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
             flag = false;
-
         }
         else{
             view.setThreadsError(null);
         }
 
         if (TextUtils.isEmpty(elements)) {
-            view.setElemntsError(view.getString(R.string.elements_empty));
+            view.setElementsError(view.getString(R.string.elements_empty));
             flag = false;
 
         } else if ("0".equals(elements)) {
-            view.setElemntsError(view.getString(R.string.elements_zero));
+            view.setElementsError(view.getString(R.string.elements_zero));
             flag = false;
 
         }else {
-            view.setElemntsError(null);
+            view.setElementsError(null);
         }
 
         if (!flag) {
 
-            final int threadsInt = Integer.valueOf(threads);
-            final int elementsInt = Integer.valueOf(threads);
+//            try
+//            {
+//                int i = Integer.parseInt(s.trim());
+//
+//                System.out.println("int i = " + i);
+//            }
+//            catch (NumberFormatException nfe)
+//            {
+//                System.out.println("NumberFormatException: " + nfe.getMessage());
+//            }
+
+           // final int threadsInt = Integer.parseInt(threads);
+            //final int elementsInt = Integer.parseInt(elements);
             final List<TaskData> taskDatas = tasksSupplier.getTasks();
-            Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
+            final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(Integer.parseInt(threads)));
             view.showProgress(true);
 
             stopCalculation(false);
-            // false means stop pool, but don't update ui
 
             compositeDisposable.add(Observable.fromIterable(taskDatas)
                     .subscribeOn(AndroidSchedulers.mainThread())
@@ -90,7 +99,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                     })
                     .map(taskData -> {
                         Thread.sleep(300);
-                        taskData.fill(elementsInt);
+                        taskData.fill(Integer.parseInt(elements));
                         calculator.execAndSetupTime(taskData);
                         return taskData.getResult();
                     })

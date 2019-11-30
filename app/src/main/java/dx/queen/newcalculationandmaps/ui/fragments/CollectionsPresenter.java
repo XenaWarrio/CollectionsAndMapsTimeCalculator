@@ -1,10 +1,7 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
 
-import android.util.Log;
-
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
@@ -14,6 +11,7 @@ import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -75,17 +73,15 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             final int threadsInt = Integer.valueOf(threads);
             final int elementsInt = Integer.valueOf(threads);
             final List<TaskData> taskDatas = tasksSupplier.getTasks();
-            final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
+            Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
             view.showProgress(true);
-            Log.d("Erroro", "startCalculation");
 
             stopCalculation(false);
-            Log.d("Erroro", "startCalculation STOPCALCULATION");
             // false means stop pool, but don't update ui
 
             compositeDisposable.add(Observable.fromIterable(taskDatas)
                     .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(Schedulers.from(executorPool))
+                    .observeOn(schedulers)
                     .doOnSubscribe(v -> {
                         if (view != null) view.showProgress(true);
                     })
@@ -93,7 +89,6 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                         stopCalculation(true);
                     })
                     .map(taskData -> {
-                        Log.d("Erroro", "MAP");
                         Thread.sleep(300);
                         taskData.fill(elementsInt);
                         calculator.execAndSetupTime(taskData);
@@ -110,30 +105,21 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void stopCalculation(boolean showMsg) {
-        Log.d("Erroro", "STOPCALCULATION METHOD");
 
         if (compositeDisposable.size() != 0) {
-            Log.d("Erroro", "compositeDisposable size is " + compositeDisposable.size());
 
             compositeDisposable.clear();
-            Log.d("Erory", String.valueOf(compositeDisposable.size()));
         } else {
             return;
         }
-        Log.d("Erroro", "stopCalculationFirstLine");
         if (view != null) {
-            Log.d("Erroro", "stopCalculationViewNotNull");
 
             view.showProgress(false);
-            Log.d("Erroro", "stopCalculationShowProgress");
 
             view.calculationStopped();
-            Log.d("Erroro", "stopCalculationCalculationStop");
 
             if (showMsg) {
                 view.showToast(R.string.calculation_stopped);
-                Log.d("Erroro", "stopCalculationShowToast"); //maybe here should be showprogress , should change on true
-
             }
         }
 

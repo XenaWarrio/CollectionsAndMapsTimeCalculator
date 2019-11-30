@@ -34,6 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragmentContract.View> {
@@ -49,8 +50,6 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
     @Mock
     CollectionFragmentContract.View view;
-
-
 
 
     @Mock
@@ -78,71 +77,69 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     public void presenterAndViewNotNull(){
         assertNotNull(presenter);
         assertNotNull(view);
-        verifyNoMore();
 
     }
 
     @Test
     public void testEmptyThreads(){
         presenter.startCalculation("5", " ");
-        Mockito.verify(view).setThreadsError(view.getString(R.string.threads_empty));
-        Mockito.when(view.getString(R.string.threads_empty)).thenReturn("Treads can`t be empty");
-        verifyNoMore();
+        when(view.getString(R.string.threads_empty)).thenReturn("Treads can`t be empty");
+        verify(view).setThreadsError(view.getString(R.string.threads_empty));
 
     }
 
     @Test
     public void testEmptyElements(){
         presenter.startCalculation(" ", "5");
-        Mockito.verify(view).setElemntsError(view.getString(R.string.elements_empty));
-        verifyNoMore();
+        when(view.getString(R.string.elements_empty)).thenReturn("Elements can`t be empty");
+        verify(view).setElemntsError(view.getString(R.string.elements_empty));
+
 
     }
 
     @Test
     public void testZeroThreads(){
         presenter.startCalculation("5", "0");
-        Mockito.verify(view).setThreadsError(view.getString(R.string.threads_zero));
-        verifyNoMore();
+        when(view.getString(R.string.threads_zero)).thenReturn("Threads can`t be zero");
+        verify(view).setThreadsError(view.getString(R.string.threads_zero));
+
 
     }
 
     @Test
     public void testZeroElements(){
         presenter.startCalculation("0", "5");
-        Mockito.verify(view).setElemntsError(view.getString(R.string.elements_zero));
-        verifyNoMore();
+        when(view.getString(R.string.elements_zero)).thenReturn("Threads can`t be zero");
+        verify(view).setElemntsError(view.getString(R.string.elements_zero));
+
 
     }
 
     @Test
     public void testNullThreads(){
         presenter.startCalculation("5", "");
-        Mockito.verify(view).setThreadsError("null");
-        verifyNoMore();
+        verify(view).setThreadsError("null");
 
     }
 
     @Test
     public void testNullElements(){
         presenter.startCalculation("", "5");
-        Mockito.verify(view).setElemntsError("null");
-        verifyNoMore();
+       verify(view).setElemntsError("null");
 
     }
 
     @Test
     public void startCalculation(){
+
         List<TaskData> taskDatas = getFakesTasks(ELEMENTS_INT);
+        when(tasksSupplier.getTasks()).thenReturn(taskDatas);
+
 
         ArgumentCaptor<List<CalculationResult>> ac = forClass(List.class);
         verify(view).setItems(ac.capture());
 
-        Mockito.when(tasksSupplier.getTasks()).thenReturn(taskDatas);
-
         presenter.startCalculation(String.format("%d", COUNT), String.format("%d", THREADS_INT));
-
-        Mockito.when(view.getString(R.string.threads_zero)).thenReturn("Threads can`t be zero");
 
 
         verify(view, never()).setElemntsError(any());
@@ -161,9 +158,8 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         verify(view).calculationStopped();
         verify(view).btnToStart();
 
-        verifyNoMore();
 
-
+    verifyNoMore();
 
 
     }
@@ -172,11 +168,10 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
     @Test
     public void getCollectionsCount() {
-        Mockito.when(tasksSupplier.getCollectionCount()).thenReturn(TASK_COUNT);
+        when(tasksSupplier.getCollectionCount()).thenReturn(TASK_COUNT);
         assertTrue(presenter.getCollectionsCount() == TASK_COUNT);
 
         Mockito.verify(tasksSupplier).getCollectionCount();
-        verifyNoMore();
 
 
     }
@@ -204,6 +199,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         }
         return tasksData;
     }
+
 
     public void verifyNoMore(){
         Mockito.verifyNoMoreInteractions(calculator);

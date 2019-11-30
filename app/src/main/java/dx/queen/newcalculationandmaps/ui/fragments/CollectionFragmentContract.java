@@ -20,7 +20,7 @@ public interface CollectionFragmentContract {
 
         void setElementsError(String error);
 
-       void setItems(List<CalculationResult> result);
+        void setItems(List<CalculationResult> result);
 
         void btnToStart();
 

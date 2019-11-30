@@ -23,6 +23,7 @@ public class AppInstance extends Application {
     public AppComponent getAppComponent() {
         return appComponent;
     }
+
     public static AppInstance getInstance() {
         return instance;
     }

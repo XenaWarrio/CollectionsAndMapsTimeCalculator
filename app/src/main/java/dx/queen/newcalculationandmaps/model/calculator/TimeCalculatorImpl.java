@@ -125,7 +125,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void searchElement(List<Integer> list) {
-       list.get((list.size()/2));
+        list.get((list.size() / 2));
 
     }
 
@@ -135,7 +135,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void searchMap(Map<Integer, Integer> map) {
-        map.get(map.size()/2);
+        map.get(map.size() / 2);
     }
 
 

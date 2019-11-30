@@ -7,7 +7,7 @@ import dx.queen.newcalculationandmaps.dto.CalculationResult;
 
 public abstract class AbstractTaskData implements TaskData {
     private final int labelResId;
-    private double time ;
+    private double time;
 
     AbstractTaskData(int labelResId) {
         this.labelResId = labelResId;

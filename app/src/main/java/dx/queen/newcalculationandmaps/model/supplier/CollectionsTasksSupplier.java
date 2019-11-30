@@ -33,7 +33,7 @@ public class CollectionsTasksSupplier implements TaskSupplier {
         tasks.add(new ListTaskData(new LinkedList<Integer>(), R.string.remove_middle_linked_list));
         tasks.add(new ListTaskData(new LinkedList<Integer>(), R.string.remove_end_linked_list));
         tasks.add(new ListTaskData(new LinkedList<Integer>(), R.string.search_linked));
-        tasks.add(new ListTaskData(new CopyOnWriteArrayList <Integer>(), R.string.add_to_start_caw));
+        tasks.add(new ListTaskData(new CopyOnWriteArrayList<Integer>(), R.string.add_to_start_caw));
         tasks.add(new ListTaskData(new CopyOnWriteArrayList<Integer>(), R.string.add_to_middle_caw));
         tasks.add(new ListTaskData(new CopyOnWriteArrayList<Integer>(), R.string.add_to_end_caw));
         tasks.add(new ListTaskData(new CopyOnWriteArrayList<Integer>(), R.string.remove_start_caw));

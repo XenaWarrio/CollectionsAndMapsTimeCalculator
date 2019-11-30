@@ -11,9 +11,9 @@ public class MapTaskData extends AbstractTaskData {
     }
 
     public void fill(int elements) {
-       for(int i = 0; i < elements; i++){
-           map.put(i,3);
-       }
+        for (int i = 0; i < elements; i++) {
+            map.put(i, 3);
+        }
     }
 
     @Override

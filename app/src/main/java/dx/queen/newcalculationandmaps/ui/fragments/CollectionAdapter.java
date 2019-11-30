@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.dto.CalculationResult;
 
@@ -42,7 +43,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         notifyDataSetChanged();
     }
 
-    List<CalculationResult> getItems(){
+    List<CalculationResult> getItems() {
         return items;
     }
 
@@ -82,9 +83,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
             final String s = nameAndTime.getContext().getString(item.getRes()) + (item.isTimeDefault() ? "-:-" : (item.time + " ms"));
             nameAndTime.setText(s);
-            if (item.isShowProgress()){
+            if (item.isShowProgress()) {
                 progressBar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 progressBar.setVisibility(View.INVISIBLE);
             }
             //progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.INVISIBLE);

@@ -17,7 +17,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-
 public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentContract.View> implements CollectionFragmentContract.Presenter {
 
     private final TaskSupplier tasksSupplier;
@@ -50,8 +49,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
         } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
             flag = false;
-        }
-        else{
+        } else {
             view.setThreadsError(null);
 
         }
@@ -64,7 +62,7 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElementsError(view.getString(R.string.elements_zero));
             flag = false;
 
-        }else {
+        } else {
             view.setElementsError(null);
         }
 

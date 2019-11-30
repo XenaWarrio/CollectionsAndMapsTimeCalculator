@@ -14,8 +14,8 @@ public class FragmentModule {
     }
 
     @Provides
-     CollectionFragmentContract.Presenter providePresenter() {
+    CollectionFragmentContract.Presenter providePresenter() {
         final AppComponent component = AppInstance.getInstance().getAppComponent();
-        return new CollectionsPresenter(mode.equals(Modes.MAPS ) ? component.injectMapsTaskSupplier(): component.injectColletionsTaskSupplier() , component.provideCalculator());
+        return new CollectionsPresenter(mode.equals(Modes.MAPS) ? component.injectMapsTaskSupplier() : component.injectColletionsTaskSupplier(), component.provideCalculator());
     }
 }

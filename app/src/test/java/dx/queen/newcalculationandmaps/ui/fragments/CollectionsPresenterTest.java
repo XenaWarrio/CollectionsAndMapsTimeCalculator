@@ -34,6 +34,8 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
     private static final int ELEMENTS_INT = 6;
     private static final int TASK_COUNT = 2;
 
+
+
     @Mock
     TaskSupplier tasksSupplier;
 
@@ -97,19 +99,20 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("0", "5");
 
         verify(view).setElementsError(view.getString(R.string.elements_zero));
-
     }
 
     @Test
     public void testNullThreads(){
         presenter.startCalculation("5", "");
+
         verify(view).setThreadsError(null);
     }
 
     @Test
     public void testNullElements(){
         presenter.startCalculation("", "5");
-       verify(view).setElementsError(null);
+
+        verify(view).setElementsError(null);
     }
 
 
@@ -148,18 +151,58 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         assertEquals(presenter.getCollectionsCount(), TASK_COUNT);
 
         Mockito.verify(tasksSupplier).getCollectionCount();
+        verifyNoMore();
     }
 
 
     @Test
     public void getInitialResults() {
-        assertNotNull(view);
-        assertEquals(view.getItems() , tasksSupplier.getInitialResults());
+        final List<CalculationResult> data = tasksSupplier.getInitialResults() ;
+        when(tasksSupplier.getInitialResults()).thenReturn(data);
+
+        view.setItems(tasksSupplier.getInitialResults());
+        final List<CalculationResult> items = view.getItems();
+
+        assertEquals(items,data);
+        verify(view).setItems(data);
     }
 
     @Test
-    public void stopCalculation() {
+    public void stopCalculation_withMessage() {
+        presenter.startCalculation("1", "1");
+
+        presenter.stopCalculation(true);
+
+        verify(tasksSupplier).getTasks();
+        verify(view).showProgress(false);
+        verify(view).calculationStopped();
+        verify(view).setThreadsError(null);
+        verify(view).setElementsError(null);
+        verify(view).showProgress(true);
+        verify(view).btnToStart();
+        verify(view).showToast(R.string.calculation_stopped);
+
+        verifyNoMore();
     }
+
+    @Test
+    public void stopCalculation_withoutMessage() {
+        presenter.startCalculation("1", "1");
+
+        presenter.stopCalculation(false);
+
+        verify(tasksSupplier).getTasks();
+        verify(view).showProgress(false);
+        verify(view).calculationStopped();
+        verify(view).setThreadsError(null);
+        verify(view).setElementsError(null);
+        verify(view).showProgress(true);
+        verify(view).btnToStart();
+
+        verifyNoMore();
+    }
+
+
 
     private List<TaskData> getFakesTasks(int count) {
         final List<TaskData> tasksData = new ArrayList<>(count);

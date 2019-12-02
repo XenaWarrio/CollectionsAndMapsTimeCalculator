@@ -35,7 +35,6 @@ public class TimeCalculatorImpl implements TimeCalculator {
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
-
             case R.string.remove_start_caw:
             case R.string.remove_start_linked_list:
             case R.string.remove_start_array_list:
@@ -48,7 +47,6 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.remove_middle_linked_list:
             case R.string.remove_middle_array_list:
 
-
                 removeMiddle(td.getList());
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
@@ -57,21 +55,17 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.remove_end_linked_list:
             case R.string.remove_end_array_list:
 
-
                 removeEndList(td.getList());
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
-
 
             case R.string.search_caw:
             case R.string.search_linked:
             case R.string.search_array:
 
-
                 searchElement(td.getList());
                 td.setTime(System.nanoTime() - start / 1_000_000D);
                 break;
-
 
             case R.string.add_to_treemapmap:
             case R.string.add_to_hashmap:
@@ -80,7 +74,6 @@ public class TimeCalculatorImpl implements TimeCalculator {
                 td.setTime((System.nanoTime() - start / 1_000_000D));
                 break;
 
-
             case R.string.remove_treemap:
             case R.string.remove_hashmap:
 
@@ -88,15 +81,12 @@ public class TimeCalculatorImpl implements TimeCalculator {
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
 
-
             case R.string.search_treemap:
             case R.string.search_hashmap:
 
                 searchMap(td.getMap());
                 td.setTime((System.nanoTime() - start) / 1_000_000D);
                 break;
-
-
         }
     }
 

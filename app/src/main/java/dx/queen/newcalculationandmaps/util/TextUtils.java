@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps;
+package dx.queen.newcalculationandmaps.util;
 
 import androidx.annotation.Nullable;
 

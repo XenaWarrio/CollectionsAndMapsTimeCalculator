@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
-import dx.queen.newcalculationandmaps.TextUtils;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
+import dx.queen.newcalculationandmaps.util.TextUtils;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -66,59 +66,49 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElementsError(null);
         }
 
-        if (flag) {
+        if (!flag) return;
 
-            final int threadsInt = Integer.parseInt(threads);// НУ ПОЧЕМУ??
-            final int elementsInt = Integer.parseInt(elements);// может экстрасенсы знают ответ...
-            final List<TaskData> taskDatas = tasksSupplier.getTasks();
-            final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
+        final int threadsInt = Integer.parseInt(threads);// НУ ПОЧЕМУ??
+        final int elementsInt = Integer.parseInt(elements);// может экстрасенсы знают ответ...
+        final List<TaskData> taskDatas = tasksSupplier.getTasks();
+        final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
 
-            stopCalculation(false);
+        stopCalculation(false);
 
-            compositeDisposable.add(Observable.fromIterable(taskDatas)
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(schedulers)
-                    .doOnSubscribe(v -> {
-                        if (view != null) view.showProgress(true);
-                    })
-                    .doFinally(() -> stopCalculation(true))
-                    .map(taskData -> {
-                        Thread.sleep(300);
-                        taskData.fill(elementsInt);
-                        calculator.execAndSetupTime(taskData);
-                        return taskData.getResult();
-                    })
-                    .subscribe(calculationResult -> {
-                        if (view != null) view.setupResult(calculationResult);
-                    }));
+        compositeDisposable.add(Observable.fromIterable(taskDatas)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(schedulers)
+                .doOnSubscribe(v -> {
+                    if (view != null) view.showProgress(true);
+                })
+                .doFinally(() -> stopCalculation(true))
+                .map(taskData -> {
+                    taskData.fill(elementsInt);
+                    calculator.execAndSetupTime(taskData);
+                    return taskData.getResult();
+                })
+                .subscribe(calculationResult -> {
+                    if (view != null) view.setupResult(calculationResult);
+                }));
 
-            view.btnToStart();
-        }
+        view.btnToStart();
     }
 
 
     @Override
     public void stopCalculation(boolean showMsg) {
+        if (compositeDisposable.size() == 0) return;
+        compositeDisposable.clear();
 
-        if (compositeDisposable.size() != 0) {
+        if (view == null) return;
 
-            compositeDisposable.clear();
-        } else {
-            return;
+        view.showProgress(false);
+
+        view.calculationStopped();
+
+        if (showMsg) {
+            view.showToast(R.string.calculation_stopped);
         }
-        if (view != null) {
-
-            view.showProgress(false);
-
-            view.calculationStopped();
-
-            if (showMsg) {
-                view.showToast(R.string.calculation_stopped);
-            }
-        }
-
     }
-
-
 }
 

@@ -1,5 +1,6 @@
 package dx.queen.newcalculationandmaps.dto.task;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,12 +30,14 @@ public class MapTaskDataTest {
 
     @Test
     public void fill() {
-        final ArgumentCaptor<Map<Integer, Integer>> argumentCaptor = ArgumentCaptor.forClass(Map.class);
+        final ArgumentCaptor<Integer> keyCaptor = ArgumentCaptor.forClass(Integer.class);
+        final ArgumentCaptor<Integer> valueCaptor = ArgumentCaptor.forClass(Integer.class);
 
         taskData.fill(COUNT_OF_ELEMENTS);
 
-        // DO NOT CALL MOCK'S METHOD IN TESTS!!!!! read and remove
-        // map.putAll(argumentCaptor.capture());
+        Mockito.verify(map, Mockito.times(6)).put(keyCaptor.capture(),valueCaptor.capture());
+
+        Assert.assertEquals(keyCaptor.getAllValues().size() ,COUNT_OF_ELEMENTS);
 
         Mockito.verifyNoMoreInteractions(map);
     }

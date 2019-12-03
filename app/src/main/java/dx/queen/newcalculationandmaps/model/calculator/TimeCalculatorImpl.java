@@ -14,7 +14,6 @@ public class TimeCalculatorImpl implements TimeCalculator {
 
         final long start = System.nanoTime();
         switch (td.getLabelResId()) {
-            // unite cases by action
             case R.string.add_to_start_caw:
             case R.string.add_to_start_array_list:
             case R.string.add_to_start_linked_list:

@@ -40,6 +40,7 @@ public class ListTaskDataTest {
 
         Mockito.verify(collectionArray).addAll(argumentCaptor.capture());
         Assert.assertEquals(argumentCaptor.getValue().size(), COUNT_OF_ELEMENTS);
+        Mockito.verifyNoMoreInteractions(collectionArray);
 
 
     }

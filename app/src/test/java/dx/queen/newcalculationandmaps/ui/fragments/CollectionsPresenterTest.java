@@ -174,6 +174,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.stopCalculation(true);
 
         verify(tasksSupplier).getTasks();
+        verify(view).showProgress(true);
         verify(view).showProgress(false);
         verify(view).calculationStopped();
         verify(view).setThreadsError(null);

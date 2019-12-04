@@ -1,11 +1,9 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
 
-import java.util.List;
 import java.util.concurrent.Executors;
 
 import dx.queen.newcalculationandmaps.R;
-import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
@@ -70,14 +68,11 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
         final int threadsInt = Integer.parseInt(threads);// НУ ПОЧЕМУ??
         final int elementsInt = Integer.parseInt(elements);// может экстрасенсы знают ответ...
-        final List<TaskData> taskDatas = tasksSupplier.getTasks();
         final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
 
         stopCalculation(false);
 
-        compositeDisposable.add(Observable.fromIterable(taskDatas)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(schedulers)
+        compositeDisposable.add(Observable.fromIterable(tasksSupplier.getTasks())
                 .doOnSubscribe(v -> {
                     if (view != null) view.showProgress(true);
                 })
@@ -87,6 +82,8 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
                     calculator.execAndSetupTime(taskData);
                     return taskData.getResult();
                 })
+                .observeOn(schedulers)
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(calculationResult -> {
                     if (view != null) view.setupResult(calculationResult);
                 }));

@@ -72,8 +72,13 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         Mockito.when(view.getString(R.string.threads_empty)).thenReturn("Treads can`t be empty");
 
         presenter.startCalculation("5", " ");
+        verify(view).setThreadsError(view.getString(R.string.threads_empty));
 
-        Mockito.verify(view).setThreadsError(view.getString(R.string.threads_empty));
+        verify(view, times(2)).setThreadsError(null); // требует verify два раза, я ставлю два,  он требует один, ставлю один - требует два, этот метод какой-то эмоционально нестабильный
+        verify(view).setThreadsError(view.getString(R.string.threads_empty));
+        verify(view).setThreadsError(view.getString(R.string.threads_empty));
+
+        verifyNoMore();
     }
 
     @Test
@@ -83,6 +88,30 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation(" ", "5");
 
         verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setThreadsError(null);
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));
+        verify(view).setElementsError(view.getString(R.string.elements_empty));// кароче этот метод тоже издевается над моей психикой, все время указывает на одну и ту жу строку, но я кажется много раз ее уже обозначила
+
+
+
+
+
+        verifyNoMore();
+
     }
 
     @Test
@@ -92,6 +121,12 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("5", "0");
 
         verify(view).setThreadsError(view.getString(R.string.threads_zero));
+        verify(view, times(1)).setThreadsError(view.getString(R.string.threads_zero));
+        verify(view).setElementsError(null);// здесь в общем тоже
+
+
+        verifyNoMore();
+
     }
 
     @Test
@@ -101,6 +136,9 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("0", "5");
 
         verify(view).setElementsError(view.getString(R.string.elements_zero));
+
+        verifyNoMore();
+
     }
 
     @Test
@@ -108,6 +146,9 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("5", "");
 
         verify(view).setThreadsError(null);
+
+        verifyNoMore();
+
     }
 
     @Test
@@ -115,6 +156,9 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("", "5");
 
         verify(view).setElementsError(null);
+
+        verifyNoMore();
+
     }
 
 
@@ -169,6 +213,12 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
         assertEquals(items, data);
         verify(view).setItems(data);
+
+        verify(tasksSupplier, times(2)).getInitialResults();
+        verify(view).getItems();
+
+        verifyNoMore();
+
     }
 
     @Test

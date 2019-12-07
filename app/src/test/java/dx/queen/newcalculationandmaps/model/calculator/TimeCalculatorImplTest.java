@@ -1,6 +1,7 @@
 package dx.queen.newcalculationandmaps.model.calculator;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -24,20 +25,20 @@ public class TimeCalculatorImplTest {
 
     TimeCalculatorImpl timeCalculator;
 
+    @Before
+    public void setUp() {
+        timeCalculator = new TimeCalculatorImpl();
+    }
+
+
+
 
     @Test
     public void execAndSetupTime() {
-        timeCalculator = new TimeCalculatorImpl();
 
         List<Integer> listForCheck = new ArrayList<>();
-        Map<Integer,Integer> mapForCheck = new HashMap<>();
-        ArgumentCaptor<Double> captor = ArgumentCaptor.forClass(Double.class);
-
         Mockito.when(taskData.getList()).thenReturn(listForCheck);
         int listBefore = listForCheck.size();
-
-        Mockito.when(taskData.getMap()).thenReturn(mapForCheck);
-        int mapBefore = mapForCheck.size();
 
         Mockito.when(taskData.getLabelResId()).thenReturn(R.string.add_to_start_array_list);
         timeCalculator.execAndSetupTime(taskData);
@@ -63,6 +64,13 @@ public class TimeCalculatorImplTest {
         timeCalculator.execAndSetupTime(taskData);
         Assert.assertEquals(taskData.getList().get(taskData.getList().size()/2), listForCheck.get(listForCheck.size() / 2));
 
+
+
+
+        Map<Integer,Integer> mapForCheck = new HashMap<>();
+        Mockito.when(taskData.getMap()).thenReturn(mapForCheck);
+        int mapBefore = mapForCheck.size();
+
         Mockito.when(taskData.getLabelResId()).thenReturn(R.string.add_to_hashmap);
         timeCalculator.execAndSetupTime(taskData);
         Assert.assertNotEquals(mapBefore, taskData.getMap().size()+1);
@@ -75,17 +83,15 @@ public class TimeCalculatorImplTest {
         timeCalculator.execAndSetupTime(taskData);
         Assert.assertEquals(mapForCheck.get(mapBefore/2), taskData.getMap().get(taskData.getMap().size() / 2));
 
+
+        ArgumentCaptor<Double> captor = ArgumentCaptor.forClass(Double.class);
+
         Mockito.verify(taskData, Mockito.times(9)).getLabelResId();
         Mockito.verify(taskData, Mockito.times(13)).getList();
         Mockito.verify(taskData, Mockito.times(9)).setTime(captor.capture());
         Mockito.verify(taskData, Mockito.times(7)).getMap();
 
         Mockito.verifyNoMoreInteractions(taskData);
-
-
-
-
-
 
 
     }

@@ -49,17 +49,14 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             flag = false;
         } else {
             view.setThreadsError(null);
-
         }
 
         if (TextUtils.isEmpty(elements)) {
             view.setElementsError(view.getString(R.string.elements_empty));
             flag = false;
-
         } else if ("0".equals(elements)) {
             view.setElementsError(view.getString(R.string.elements_zero));
             flag = false;
-
         } else {
             view.setElementsError(null);
         }

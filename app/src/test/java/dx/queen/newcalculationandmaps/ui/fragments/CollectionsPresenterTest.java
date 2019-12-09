@@ -74,8 +74,7 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("5", " ");
         verify(view).setThreadsError(view.getString(R.string.threads_empty));
 
-        verify(view, times(2)).setThreadsError(null); // требует verify два раза, я ставлю два,  он требует один, ставлю один - требует два, этот метод какой-то эмоционально нестабильный
-        verify(view).setThreadsError(view.getString(R.string.threads_empty));
+        verify(view, times(1)).setThreadsError(null); // требует verify два раза, я ставлю два,  он требует один, ставлю один - требует два, этот метод какой-то эмоционально нестабильный
         verify(view).setThreadsError(view.getString(R.string.threads_empty));
 
         verifyNoMore();
@@ -83,35 +82,16 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
     @Test
     public void testEmptyElements() {
-        when(view.getString(R.string.elements_empty)).thenReturn("Elements can`t be empty");
+        final String mockMessage = "Elements can`t be empty";
+        when(view.getString(R.string.elements_empty)).thenReturn(mockMessage);
 
         presenter.startCalculation(" ", "5");
 
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
         verify(view).setThreadsError(null);
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));
-        verify(view).setElementsError(view.getString(R.string.elements_empty));// кароче этот метод тоже издевается над моей психикой, все время указывает на одну и ту жу строку, но я кажется много раз ее уже обозначила
-
-
-
-
+        verify(view).getString(R.string.elements_empty); // this is your bug: verify getString method
+        verify(view).setElementsError(mockMessage);// кароче этот метод тоже издевается над моей психикой, все время указывает на одну и ту жу строку, но я кажется много раз ее уже обозначила
 
         verifyNoMore();
-
     }
 
     @Test
@@ -120,25 +100,23 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
         presenter.startCalculation("5", "0");
 
+        // verify getString method
         verify(view).setThreadsError(view.getString(R.string.threads_zero));
-        verify(view, times(1)).setThreadsError(view.getString(R.string.threads_zero));
         verify(view).setElementsError(null);// здесь в общем тоже
 
-
         verifyNoMore();
-
     }
 
     @Test
     public void testZeroElements() {
-        when(view.getString(R.string.elements_zero)).thenReturn("Threads can`t be zero");
+        final String mockMsg = "Threads can`t be zero";
+        when(view.getString(R.string.elements_zero)).thenReturn(mockMsg);
 
         presenter.startCalculation("0", "5");
 
-        verify(view).setElementsError(view.getString(R.string.elements_zero));
+        verify(view).setElementsError(mockMsg);
 
         verifyNoMore();
-
     }
 
     @Test
@@ -148,7 +126,6 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         verify(view).setThreadsError(null);
 
         verifyNoMore();
-
     }
 
     @Test
@@ -158,7 +135,6 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         verify(view).setElementsError(null);
 
         verifyNoMore();
-
     }
 
 

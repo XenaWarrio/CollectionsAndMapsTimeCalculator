@@ -2,9 +2,6 @@ package dx.queen.newcalculationandmaps.dagger_stuff;
 
 import android.app.Application;
 
-import dx.queen.newcalculationandmaps.model.DaggerAppComponent;
-
-
 public class AppInstance extends Application {
 
     private static AppInstance instance;

@@ -2,8 +2,9 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 
 import dagger.Module;
 import dagger.Provides;
+import dx.queen.newcalculationandmaps.dagger_stuff.AppInstance;
 import dx.queen.newcalculationandmaps.dto.Modes;
-import dx.queen.newcalculationandmaps.model.AppComponent;
+import dx.queen.newcalculationandmaps.dagger_stuff.AppComponent;
 
 @Module
 public class FragmentModule {

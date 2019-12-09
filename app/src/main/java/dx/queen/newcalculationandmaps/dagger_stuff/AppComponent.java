@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps.model;
+package dx.queen.newcalculationandmaps.dagger_stuff;
 
 import javax.inject.Named;
 

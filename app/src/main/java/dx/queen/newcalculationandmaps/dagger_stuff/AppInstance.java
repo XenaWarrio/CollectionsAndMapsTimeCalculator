@@ -1,9 +1,7 @@
-package dx.queen.newcalculationandmaps.ui.fragments;
+package dx.queen.newcalculationandmaps.dagger_stuff;
 
 import android.app.Application;
 
-import dx.queen.newcalculationandmaps.model.AppComponent;
-import dx.queen.newcalculationandmaps.model.AppModule;
 import dx.queen.newcalculationandmaps.model.DaggerAppComponent;
 
 
@@ -28,4 +26,11 @@ public class AppInstance extends Application {
         return instance;
     }
 
+    public void setAppComponent(AppComponent appComponent) {
+        this.appComponent = appComponent;
+    }
+
+    public static void setInstance(AppInstance instance) {
+        AppInstance.instance = instance;
+    }
 }

@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps;
+package dx.queen.newcalculationandmaps.dagger_stuff;
 
 import android.content.Context;
 
@@ -8,15 +8,17 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
+import dx.queen.newcalculationandmaps.model.calculator.TimeCalculatorImpl;
 import dx.queen.newcalculationandmaps.model.supplier.CollectionsTasksSupplier;
 import dx.queen.newcalculationandmaps.model.supplier.MapsTasksSupplier;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 
 @Module
-public class TestAppModule {
+public class AppModule {
+
     private final Context context;
 
-    public TestAppModule(Context context) {
+    public AppModule(Context context) {
         this.context = context;
     }
 
@@ -28,7 +30,7 @@ public class TestAppModule {
 
     @Provides
     public TimeCalculator provideTimeCalculator() {
-        return new TestCalculator();
+        return new TimeCalculatorImpl();
 
     }
 

@@ -1,13 +1,12 @@
-package dx.queen.newcalculationandmaps.app;
+package dx.queen.newcalculationandmaps.dagger_stuff;
 
 import android.content.Context;
 
 import javax.inject.Inject;
 
 import dagger.Module;
-import dx.queen.newcalculationandmaps.dagger_stuff.AppModule;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
-import dx.queen.newcalculationandmaps.testcalculator.TestCalculator;
+import dx.queen.newcalculationandmaps.model.calculator.TestCalculator;
 
 @Module
 public class AppModuleTest extends AppModule {

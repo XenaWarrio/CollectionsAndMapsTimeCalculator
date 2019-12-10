@@ -1,7 +1,6 @@
 package dx.queen.newcalculationandmaps.model.calculator;
 
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
-import dx.queen.newcalculationandmaps.model.calculator.TimeCalculatorImpl;
 
 
 public class TestCalculator extends TimeCalculatorImpl {

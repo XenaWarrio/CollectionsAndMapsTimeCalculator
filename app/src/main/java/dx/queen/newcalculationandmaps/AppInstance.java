@@ -1,12 +1,15 @@
-package dx.queen.newcalculationandmaps.dagger_stuff;
+package dx.queen.newcalculationandmaps;
 
 import android.app.Application;
+
+import dx.queen.newcalculationandmaps.model.AppComponent;
+import dx.queen.newcalculationandmaps.model.AppModule;
+import dx.queen.newcalculationandmaps.model.DaggerAppComponent;
 
 public class AppInstance extends Application {
 
     private static AppInstance instance;
     private AppComponent appComponent;
-
 
     @Override
     public void onCreate() {
@@ -25,9 +28,5 @@ public class AppInstance extends Application {
 
     public void setAppComponent(AppComponent appComponent) {
         this.appComponent = appComponent;
-    }
-
-    public static void setInstance(AppInstance instance) {
-        AppInstance.instance = instance;
     }
 }

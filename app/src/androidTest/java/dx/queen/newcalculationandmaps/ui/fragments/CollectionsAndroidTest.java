@@ -1,8 +1,15 @@
-package dx.queen.newcalculationandmaps.ui.fragments;
+package dx.queen.newcalculationandmaps.CollectionAndroidTest;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+
+import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+import androidx.test.rule.ActivityTestRule;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -13,19 +20,14 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.test.espresso.DataInteraction;
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
-import androidx.test.rule.ActivityTestRule;
+import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
-import dx.queen.newcalculationandmaps.dagger_stuff.AppModuleTest;
-import dx.queen.newcalculationandmaps.dagger_stuff.AppInstance;
-import dx.queen.newcalculationandmaps.dagger_stuff.DaggerAppComponent;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
+import dx.queen.newcalculationandmaps.model.AppModuleTest;
+import dx.queen.newcalculationandmaps.model.DaggerAppComponent;
 import dx.queen.newcalculationandmaps.model.calculator.TestCalculator;
 import dx.queen.newcalculationandmaps.ui.MainActivity;
+import dx.queen.newcalculationandmaps.ui.fragments.CollectionsPresenter;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -47,7 +49,6 @@ public class CollectionsAndroidTest {
     TestCalculator calculator;
     Context context;
 
-
     @Rule
     public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class) {
 
@@ -55,20 +56,18 @@ public class CollectionsAndroidTest {
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
             AppInstance.getInstance().setAppComponent(DaggerAppComponent.builder().appModule(new AppModuleTest(context)).build());
+            // wtf?!
             calculator = (TestCalculator) DaggerAppComponent.builder().appModule(new AppModuleTest(context)).build().provideCalculator();
         }
-
     };
 
     @Before
-    public void fragment(){
+    public void fragment() {
         onView(ViewMatchers.withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
         ViewInteraction collectionTab = onView(withText(R.string.tab_collections));
         collectionTab.perform(click());
         collectionTab.check(matches(ViewMatchers.isSelected()));
     }
-
-
 
     @Test
     public void testAllLabelsVisible() {
@@ -78,7 +77,6 @@ public class CollectionsAndroidTest {
         onView(withId(R.id.bt_start)).check(matches(isDisplayed()));
 
     }
-
 
     @Test
     public void testWithInput() {
@@ -93,7 +91,6 @@ public class CollectionsAndroidTest {
         onView(allOf(withId(R.id.progressBar),
                 isDescendantOfA(allOf(withId(R.id.recycler)))))
                 .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-
     }
 
     @Test
@@ -101,35 +98,28 @@ public class CollectionsAndroidTest {
         DataInteraction progressView = onData(allOf(isDisplayed(), withId(R.id.progressBar)));
         assertNotNull(progressView);
 
-
         try {
             progressView.inAdapterView(getRecyclerMatcher())
                     .atPosition(i)
                     .check(matches(viewMatcher));
-        }
-        catch (Throwable e){
+        } catch (Throwable e) {
             Log.e("TEST", "Progress not matches " + i);
         }
     }
 
-
-
-    public Matcher<View> getRecyclerMatcher(){
-    onView(withId(R.id.recycler)).check(matches(isDisplayed()));
-    Matcher<View> viewMatcher = withId(R.id.recycler);
-    return viewMatcher; }
-
+    public Matcher<View> getRecyclerMatcher() {
+        onView(withId(R.id.recycler)).check(matches(isDisplayed()));
+        Matcher<View> viewMatcher = withId(R.id.recycler);
+        return viewMatcher;
+    }
 
     @Test
-    public void testCalculatorVisible(){
-         List<TaskData> td= new ArrayList<>(6);
-            for(TaskData r : td){
-                calculator.execAndSetupTime(r);
-            }
-
+    public void testCalculatorVisible() {
+        List<TaskData> td = new ArrayList<>(6);
+        for (TaskData r : td) {
+            calculator.execAndSetupTime(r);
+        }
 
         onView(withId(R.id.tv_name)).check(matches(withText("3")));
-
     }
 }
-

@@ -4,6 +4,13 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+import androidx.test.rule.ActivityTestRule;
+
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,18 +20,12 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.test.espresso.DataInteraction;
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
-import androidx.test.rule.ActivityTestRule;
+import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
-import dx.queen.newcalculationandmaps.app.AppModuleTest;
-import dx.queen.newcalculationandmaps.dagger_stuff.AppInstance;
 import dx.queen.newcalculationandmaps.dto.task.TaskData;
+import dx.queen.newcalculationandmaps.model.AppModuleTest;
 import dx.queen.newcalculationandmaps.model.DaggerAppComponent;
-import dx.queen.newcalculationandmaps.testcalculator.TestCalculator;
+import dx.queen.newcalculationandmaps.model.calculator.TestCalculator;
 import dx.queen.newcalculationandmaps.ui.MainActivity;
 import dx.queen.newcalculationandmaps.ui.fragments.CollectionsPresenter;
 

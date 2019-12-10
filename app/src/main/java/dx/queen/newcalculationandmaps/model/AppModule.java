@@ -1,4 +1,4 @@
-package dx.queen.newcalculationandmaps.dagger_stuff;
+package dx.queen.newcalculationandmaps.model;
 
 import android.content.Context;
 

@@ -69,13 +69,15 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
     @Test
     public void testEmptyThreads() {
-        Mockito.when(view.getString(R.string.threads_empty)).thenReturn("Treads can`t be empty");
+        final String mockMessage = "Threads can`t be empty";
+        Mockito.when(view.getString(R.string.threads_empty)).thenReturn(mockMessage);
 
         presenter.startCalculation("5", " ");
-        verify(view).setThreadsError(view.getString(R.string.threads_empty));
 
-        verify(view, times(1)).setThreadsError(null); // требует verify два раза, я ставлю два,  он требует один, ставлю один - требует два, этот метод какой-то эмоционально нестабильный
-        verify(view).setThreadsError(view.getString(R.string.threads_empty));
+        verify(view).setElementsError(null);
+        verify(view).getString(R.string.threads_empty);
+        verify(view).setThreadsError(mockMessage);
+
 
         verifyNoMore();
     }
@@ -88,21 +90,23 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation(" ", "5");
 
         verify(view).setThreadsError(null);
-        verify(view).getString(R.string.elements_empty); // this is your bug: verify getString method
-        verify(view).setElementsError(mockMessage);// кароче этот метод тоже издевается над моей психикой, все время указывает на одну и ту жу строку, но я кажется много раз ее уже обозначила
+        verify(view).getString(R.string.elements_empty);
+        verify(view).setElementsError(mockMessage);
 
         verifyNoMore();
     }
 
     @Test
     public void testZeroThreads() {
-        when(view.getString(R.string.threads_zero)).thenReturn("Threads can`t be zero");
+        final String mockMessage = "Threads can`t be zero";
+
+        when(view.getString(R.string.threads_zero)).thenReturn(mockMessage);
 
         presenter.startCalculation("5", "0");
 
-        // verify getString method
-        verify(view).setThreadsError(view.getString(R.string.threads_zero));
-        verify(view).setElementsError(null);// здесь в общем тоже
+        verify(view).setElementsError(null);
+        verify(view).getString(R.string.threads_zero);
+        verify(view).setThreadsError(mockMessage);
 
         verifyNoMore();
     }
@@ -114,6 +118,8 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
         presenter.startCalculation("0", "5");
 
+        verify(view).setThreadsError(null);
+        verify(view).getString(R.string.elements_zero);
         verify(view).setElementsError(mockMsg);
 
         verifyNoMore();
@@ -121,9 +127,13 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
 
     @Test
     public void testNullThreads() {
+
         presenter.startCalculation("5", "");
 
         verify(view).setThreadsError(null);
+        verify(view).setElementsError(null);
+        verify(view).getString(R.string.threads_empty);
+
 
         verifyNoMore();
     }
@@ -133,6 +143,8 @@ public class CollectionsPresenterTest extends AbstractPresenter<CollectionFragme
         presenter.startCalculation("", "5");
 
         verify(view).setElementsError(null);
+        verify(view).setThreadsError(null);
+        verify(view).getString(R.string.elements_empty);
 
         verifyNoMore();
     }

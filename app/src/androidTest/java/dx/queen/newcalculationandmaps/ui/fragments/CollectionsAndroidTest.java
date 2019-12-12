@@ -1,14 +1,8 @@
-package dx.queen.newcalculationandmaps.CollectionAndroidTest;
+package dx.queen.newcalculationandmaps.ui.fragments;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-
-import org.hamcrest.Matcher;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
@@ -16,6 +10,13 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
+
+import org.hamcrest.Matcher;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.model.AppModuleTest;
@@ -36,15 +37,13 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class CollectionsAndroidTest {
 
-    Context context;
-
     @Rule
     public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class) {
 
         @Override
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
-            context = AppInstance.getInstance();
+            final Context context = AppInstance.getInstance();
             AppInstance.getInstance().setAppComponent(DaggerAppComponent.builder().appModule(new AppModuleTest(context)).build());
         }
     };
@@ -52,7 +51,7 @@ public class CollectionsAndroidTest {
     @Before
     public void fragment() {
         onView(ViewMatchers.withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
-        ViewInteraction collectionTab = onView(withText(R.string.tab_collections));
+        final ViewInteraction collectionTab = onView(withText(R.string.tab_collections));
         collectionTab.perform(click());
         collectionTab.check(matches(ViewMatchers.isSelected()));
     }
@@ -63,7 +62,6 @@ public class CollectionsAndroidTest {
         onView(withId(R.id.et_operations)).check(matches(isDisplayed()));
         onView(withId(R.id.et_threads)).check(matches(isDisplayed()));
         onView(withId(R.id.bt_start)).check(matches(isDisplayed()));
-
     }
 
     @Test
@@ -82,7 +80,7 @@ public class CollectionsAndroidTest {
     }
 
     public void checkProgressBarVisibility(Matcher<View> viewMatcher, int i) {
-        DataInteraction progressView = onData(allOf(isDisplayed(), withId(R.id.progressBar)));
+        final DataInteraction progressView = onData(allOf(isDisplayed(), withId(R.id.progressBar)));
         assertNotNull(progressView);
 
         try {
@@ -96,8 +94,6 @@ public class CollectionsAndroidTest {
 
     public Matcher<View> getRecyclerMatcher() {
         onView(withId(R.id.recycler)).check(matches(isDisplayed()));
-        Matcher<View> viewMatcher = withId(R.id.recycler);
-        return viewMatcher;
+        return withId(R.id.recycler);
     }
-
 }

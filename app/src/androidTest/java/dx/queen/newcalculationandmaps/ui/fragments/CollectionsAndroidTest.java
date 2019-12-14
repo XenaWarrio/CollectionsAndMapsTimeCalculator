@@ -1,8 +1,12 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.View;
+
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
@@ -10,13 +14,6 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
-
-import org.hamcrest.Matcher;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.model.AppModuleTest;
@@ -43,12 +40,12 @@ public class CollectionsAndroidTest {
         @Override
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
-            final Context context = AppInstance.getInstance();
-            AppInstance.getInstance().setAppComponent(DaggerAppComponent.builder().appModule(new AppModuleTest(context)).build());
+            final AppInstance app = AppInstance.getInstance();
+            app.setAppComponent(DaggerAppComponent.builder().appModule(new AppModuleTest(app)).build());
         }
     };
 
-    @Before
+    @Test
     public void fragment() {
         onView(ViewMatchers.withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
         final ViewInteraction collectionTab = onView(withText(R.string.tab_collections));
@@ -71,12 +68,6 @@ public class CollectionsAndroidTest {
         onView(withId(R.id.bt_start)).perform(click());
         onView(withId(R.id.progressBar)).check(matches(isDisplayed()));
 
-
-//        presenter.startCalculation("6", "6");
-//        onView(withId(R.id.tv_name)).check(matches(isDisplayed()));
-//        onView(allOf(withId(R.id.progressBar),
-//                isDescendantOfA(allOf(withId(R.id.recycler)))))
-//                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
     public void checkProgressBarVisibility(Matcher<View> viewMatcher, int i) {

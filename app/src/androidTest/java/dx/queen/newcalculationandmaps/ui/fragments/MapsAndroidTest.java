@@ -1,7 +1,9 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
+import android.view.View;
 import android.widget.ProgressBar;
 
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,16 +28,14 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
 import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class MapsAndroidTest {
@@ -58,22 +58,24 @@ public class MapsAndroidTest {
     };
 
     private void checkSingleElementInRW(int position, int stringResourceId, boolean isCalcComplete) {
+        Matcher<View> recyclerAtPosition = new RecyclerViewMatcher(R.id.recycler).atPosition(position);
 
-        if (recyclerView == null)
-            viewPager =  mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
-            recyclerView =  viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
-        onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
-        onView(new RecyclerViewMatcher(R.id.recycler).atPosition(position))
-                .check(matches(hasDescendant(withText(stringResourceId))));
+        if (recyclerView == null) {
+            viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
+            recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
+            onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
+            onView(recyclerAtPosition)
+                    .check(matches(hasDescendant(withText(stringResourceId))));
+        }
         if (isCalcComplete) {
-            onView(new RecyclerViewMatcher(R.id.recycler).atPosition(position))
+            onView(recyclerAtPosition)
                     .check(matches(hasDescendant(withText(TEST_RESULT))));
-            onView(new RecyclerViewMatcher(R.id.recycler).atPosition(position))
+            onView(recyclerAtPosition)
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         } else {
-            onView(new RecyclerViewMatcher(R.id.recycler).atPosition(position))
+            onView(recyclerAtPosition)
                     .check(matches(hasDescendant(withText(DEFAULT_RESULT))));
-            onView(new RecyclerViewMatcher(R.id.recycler).atPosition(position))
+            onView(recyclerAtPosition)
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
     }
@@ -86,9 +88,10 @@ public class MapsAndroidTest {
         checkSingleElementInRW(5, R.string.remove_hashmap, isCalcComplete);
     }
     private void checkRecyclerViewInLoad() {
-        if (recyclerView == null)
-        viewPager =  mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
-        recyclerView =  viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
+        if (recyclerView == null) {
+            viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
+            recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
+        }
         for (int i = 0; i <= 5; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
             onView(new RecyclerViewMatcher(R.id.recycler).atPosition(i))
@@ -116,9 +119,10 @@ public class MapsAndroidTest {
     public void testInputElementsEmptyError() throws InterruptedException {
         onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());
         Thread.sleep(500);
-        testInputOnTab("", "6");
+        testInputOnTab(" ", "6");
         Thread.sleep(200);
-        onView(withText(R.string.elements_empty)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withId(R.id.et_operations)).check(matches(hasErrorText(String.valueOf(R.string.elements_empty))));
+        // onView(withText(R.string.elements_empty)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
     @Test
     public void testInputElementsTooLittleError() throws InterruptedException {
@@ -126,15 +130,17 @@ public class MapsAndroidTest {
         Thread.sleep(500);
         testInputOnTab("0", "6");
         Thread.sleep(200);
-        onView(withText(R.string.elements_zero)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withId(R.id.et_operations)).check(matches(hasErrorText(String.valueOf(R.string.elements_zero))));
+        //onView(withText(R.string.elements_zero)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
     @Test
     public void testInputThreadsEmptyError() throws InterruptedException {
         onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());
         Thread.sleep(500);
-        testInputOnTab("100000", "");
+        testInputOnTab("100000", " ");
         Thread.sleep(200);
-        onView(withText(R.string.threads_empty)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withId(R.id.et_threads)).check(matches(hasErrorText(String.valueOf(R.string.threads_empty))));
+        // onView(withText(R.string.threads_empty)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
     @Test
     public void testInputThreadsTooLittleError() throws InterruptedException {
@@ -142,7 +148,8 @@ public class MapsAndroidTest {
         Thread.sleep(500);
         testInputOnTab("100000", "0");
         Thread.sleep(200);
-        onView(withText(R.string.threads_zero)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withId(R.id.et_threads)).check(matches(hasErrorText(String.valueOf(R.string.threads_zero))));
+        //onView(withText(R.string.threads_zero)).inRoot(withDecorView(not( is(mainActivityActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 }
 

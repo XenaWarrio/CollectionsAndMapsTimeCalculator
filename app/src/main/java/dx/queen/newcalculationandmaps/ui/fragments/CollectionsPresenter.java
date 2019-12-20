@@ -1,9 +1,8 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
 
-import android.content.res.Resources;
+import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,14 +12,16 @@ import dx.queen.newcalculationandmaps.dto.task.TaskData;
 import dx.queen.newcalculationandmaps.model.calculator.TimeCalculator;
 import dx.queen.newcalculationandmaps.model.supplier.TaskSupplier;
 import dx.queen.newcalculationandmaps.mvp.AbstractPresenter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentContract.View> implements CollectionFragmentContract.Presenter {
 
     private final TaskSupplier tasksSupplier;
     private final TimeCalculator calculator;
-    private ExecutorService executorPool;
-
-
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public CollectionsPresenter(TaskSupplier tasksSupplier, TimeCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
@@ -41,63 +42,102 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
 
     @Override
     public void startCalculation(String elements, String threads) {
-        if(threads.isEmpty()){
+
+       boolean flag = true;
+        if (threads.isEmpty()) {
             view.setThreadsError(view.getString(R.string.threads_empty));
-            Resources.getSystem().getString(R.string.threads_empty);
-        } else if("0".equals(threads)) {
+            flag = false;
+        } else if ("0".equals(threads)) {
             view.setThreadsError(view.getString(R.string.threads_zero));
+            flag = false;
+
         } else {
-            view.setThreadsError(null);
+            view.setThreadsError("null");
+            flag = false;
+
         }
-        if(threads.isEmpty()){
+
+        if (elements.isEmpty()) {
             view.setElemntsError(view.getString(R.string.elements_empty));
-        } else if("0".equals(threads)) {
+            flag = false;
+
+        } else if ("0".equals(elements)) {
             view.setElemntsError(view.getString(R.string.threads_zero));
+            flag = false;
+
         } else {
-            view.setElemntsError(null);
+            view.setElemntsError("null");
+            flag = false;
+
         }
 
-        final int threadsInt = Integer.valueOf(threads);
-        final int elementsInt = Integer.valueOf(threads);
+        if (!flag) {
 
+            final int threadsInt = Integer.valueOf(threads);
+            final int elementsInt = Integer.valueOf(threads);
+            final List<TaskData> taskDatas = tasksSupplier.getTasks();
+            final ExecutorService executorPool = Executors.newFixedThreadPool(threadsInt);
+            view.showProgress(true);
+            Log.d("Erroro", "startCalculation");
 
-        final List<TaskData> taskDatas = tasksSupplier.getTasks();
-        stopCalculation(false); // false means stop pool, but don't update ui
+            stopCalculation(false);
+            Log.d("Erroro", "startCalculation STOPCALCULATION");
+            // false means stop pool, but don't update ui
 
-        view.showProgress(true);
-        executorPool = Executors.newFixedThreadPool(threadsInt);
-        for (TaskData td : new ArrayList<>(taskDatas)) {
-            executorPool.submit(() -> {
-                td.fill(elementsInt);
-                calculator.execAndSetupTime(td);
+            compositeDisposable.add(Observable.fromIterable(taskDatas)
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.from(executorPool))
+                    .doOnSubscribe(v -> {
+                        if (view != null) view.showProgress(true);
+                    })
+                    .doFinally(() -> {
+                        stopCalculation(true);
+                    })
+                    .map(taskData -> {
+                        Log.d("Erroro", "MAP");
+                        Thread.sleep(300);
+                        taskData.fill(elementsInt);
+                        calculator.execAndSetupTime(taskData);
+                        return taskData.getResult();
+                    })
+                    .subscribe(calculationResult -> {
+                        if (view != null) view.setupResult(calculationResult);
+                    }));
 
-                taskDatas.remove(td);
-                if (view != null) {
-                    view.setupResult(td.getResult());
-                }
-
-                if (taskDatas.isEmpty()) {
-                    if (view != null) {
-                        view.showToast(R.string.calculation_finished);
-                    }
-                    stopCalculation(false);
-                }
-            });
+            view.btnToStart();
         }
     }
 
+
     @Override
     public void stopCalculation(boolean showMsg) {
-        if (executorPool == null) return;
-        executorPool.shutdownNow();
-        executorPool = null;
+        Log.d("Erroro", "STOPCALCULATION METHOD");
 
+        if (compositeDisposable.size() != 0) {
+            Log.d("Erroro", "compositeDisposable size is " + compositeDisposable.size());
+
+            compositeDisposable.clear();
+            Log.d("Erory", String.valueOf(compositeDisposable.size()));
+        } else {
+            return;
+        }
+        Log.d("Erroro", "stopCalculationFirstLine");
         if (view != null) {
+            Log.d("Erroro", "stopCalculationViewNotNull");
+
+            view.showProgress(false);
+            Log.d("Erroro", "stopCalculationShowProgress");
+
             view.calculationStopped();
+            Log.d("Erroro", "stopCalculationCalculationStop");
+
             if (showMsg) {
                 view.showToast(R.string.calculation_stopped);
+                Log.d("Erroro", "stopCalculationShowToast"); //maybe here should be showprogress , should change on true
+
             }
         }
+
     }
 }
 

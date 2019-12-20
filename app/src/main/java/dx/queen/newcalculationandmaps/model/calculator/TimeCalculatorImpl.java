@@ -11,6 +11,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
 
     @Override
     public void execAndSetupTime(TaskData td) {
+
         final long start = System.nanoTime();
         switch (td.getLabelResId()) {
             // unite cases by action
@@ -68,7 +69,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
 
 
                 searchElement(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                td.setTime(System.nanoTime() - start / 1_000_000D);
                 break;
 
 
@@ -76,7 +77,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.add_to_hashmap:
 
                 addMap(td.getMap());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                td.setTime((System.nanoTime() - start / 1_000_000D));
                 break;
 
 
@@ -124,7 +125,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void searchElement(List<Integer> list) {
-        list.get(list.indexOf(0));
+       list.get((list.size()/2));
 
     }
 
@@ -134,12 +135,13 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void searchMap(Map<Integer, Integer> map) {
-        map.get(0);
+        map.get(map.size()/2);
     }
 
 
     private synchronized void removeMap(Map<Integer, Integer> map) {
         map.remove(0);
+
     }
 }
 

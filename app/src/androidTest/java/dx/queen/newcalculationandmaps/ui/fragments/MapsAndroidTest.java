@@ -65,12 +65,12 @@ public class MapsAndroidTest {
 
         if (isCalcComplete) {
             onView(recyclerAtPosition)
-                    .perform(CertainViewAction.checkTextView(R.id.tv_name, TEST_RESULT));
+                    .perform(CertainViewAction.checkTextView(stringResourceId, TEST_RESULT));
             onView(recyclerAtPosition)
                     .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.INVISIBLE));
         } else {
             onView(recyclerAtPosition)
-                    .perform(CertainViewAction.checkTextView(R.id.tv_name, DEFAULT_RESULT));
+                    .perform(CertainViewAction.checkTextView(stringResourceId, DEFAULT_RESULT));
             onView(recyclerAtPosition)
                     .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.VISIBLE));
         }

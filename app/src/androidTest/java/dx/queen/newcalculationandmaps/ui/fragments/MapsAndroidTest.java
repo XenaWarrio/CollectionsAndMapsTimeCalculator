@@ -1,7 +1,6 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
 import android.view.View;
-import android.widget.ProgressBar;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -15,6 +14,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
 import dx.queen.newcalculationandmaps.AppInstance;
+import dx.queen.newcalculationandmaps.CertainViewAction;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.RecyclerViewMatcher;
 import dx.queen.newcalculationandmaps.model.AppModuleTest;
@@ -26,13 +26,10 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
 import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
-import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -65,25 +62,28 @@ public class MapsAndroidTest {
             onView(recyclerAtPosition)
                     .check(matches(hasDescendant(withText(stringResourceId))));
         }
+
         if (isCalcComplete) {
             onView(recyclerAtPosition)
-                    .check(matches(hasDescendant(withText(TEST_RESULT))));
+                    .perform(CertainViewAction.checkTextView(R.id.tv_name, TEST_RESULT));
             onView(recyclerAtPosition)
-                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
+                    .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.INVISIBLE));
         } else {
             onView(recyclerAtPosition)
-                    .check(matches(hasDescendant(withText(DEFAULT_RESULT))));
+                    .perform(CertainViewAction.checkTextView(R.id.tv_name, DEFAULT_RESULT));
             onView(recyclerAtPosition)
-                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
+                    .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.VISIBLE));
         }
     }
 
     private void checkAllElementsInRecyclerView(boolean isCalcComplete) {
         checkSingleElementInRW(0, R.string.add_to_hashmap, isCalcComplete);
-        checkSingleElementInRW(1, R.string.remove_hashmap, isCalcComplete);
-        checkSingleElementInRW(2, R.string.search_hashmap, isCalcComplete);
-        checkSingleElementInRW(3, R.string.add_to_treemapmap, isCalcComplete);
-        checkSingleElementInRW(4, R.string.remove_treemap, isCalcComplete);
+        checkSingleElementInRW(1, R.string.search_hashmap, isCalcComplete);
+        checkSingleElementInRW(2, R.string.remove_treemap, isCalcComplete);
+
+
+        checkSingleElementInRW(3, R.string.remove_hashmap, isCalcComplete);
+        checkSingleElementInRW(4, R.string.add_to_treemapmap, isCalcComplete);
         checkSingleElementInRW(5, R.string.search_treemap, isCalcComplete);
 
     }
@@ -96,7 +96,7 @@ public class MapsAndroidTest {
         for (int i = 0; i <= 5; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
             onView(new RecyclerViewMatcher(R.id.recycler).atPosition(i))
-                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+                    .perform(CertainViewAction.checkProgressBar(R.id.progressBar,ViewMatchers.Visibility.VISIBLE));
         }
     }
 
@@ -125,7 +125,7 @@ public class MapsAndroidTest {
         Thread.sleep(500);
         testInputOnTab(" ", "6");
         Thread.sleep(200);
-        onView(allOf(withId(R.id.et_operations), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getBaseContext().getString(R.string.elements_empty))));
+        onView(allOf(withId(R.id.et_operations), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getString(R.string.elements_empty))));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class MapsAndroidTest {
         Thread.sleep(500);
         testInputOnTab("0", "6");
         Thread.sleep(200);
-        onView(allOf(withId(R.id.et_operations), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getBaseContext().getString(R.string.elements_zero))));
+        onView(allOf(withId(R.id.et_operations), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getString(R.string.elements_zero))));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class MapsAndroidTest {
         Thread.sleep(500);
         testInputOnTab("6", " ");
         Thread.sleep(200);
-        onView(allOf(withId(R.id.et_operations), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getBaseContext().getString(R.string.threads_empty))));
+        onView(allOf(withId(R.id.et_threads), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getString(R.string.threads_empty))));
     }
 
     @Test
@@ -152,7 +152,7 @@ public class MapsAndroidTest {
         Thread.sleep(500);
         testInputOnTab("6", "0");
         Thread.sleep(200);
-        onView(allOf(withId(R.id.et_operations), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getBaseContext().getString(R.string.elements_zero))));
+        onView(allOf(withId(R.id.et_threads), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getString(R.string.threads_zero))));
     }
 }
 

@@ -2,11 +2,7 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 
 import android.util.Log;
 import android.view.View;
-
-import org.hamcrest.Matcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import android.widget.ProgressBar;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.action.ViewActions;
@@ -14,6 +10,12 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
+
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.CertainViewAction;
 import dx.queen.newcalculationandmaps.R;
@@ -27,10 +29,13 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
 import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -57,14 +62,12 @@ public class MapsAndroidTest {
 
     private void checkSingleElementInRW(int position, int stringResourceId, boolean isCalcComplete) {
         final String partText = mainActivityActivityTestRule.getActivity().getString(stringResourceId);
-
-        Log.d("MAPS_TEST", "Checking " + partText);
-
         if (recyclerView == null) {
             viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
             recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
         }
         onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
+        Log.d("MAPS_TEST", "Checking " + partText);
 
         final Matcher<View> recyclerPositionMatcher = new RecyclerViewMatcher(recyclerView).atPosition(position);
         // onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(stringResourceId))));
@@ -74,13 +77,13 @@ public class MapsAndroidTest {
 //            onView(recyclerPositionMatcher)
 //                    .perform(CertainViewAction.checkTextView(R.id.tv_name, partText + TEST_RESULT));
             onView(recyclerPositionMatcher)
-                    .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.INVISIBLE));
+                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         } else {
             onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + DEFAULT_RESULT))));
 //            onView(recyclerPositionMatcher)
 //                    .perform(CertainViewAction.checkTextView(R.id.tv_name, partText + DEFAULT_RESULT));
             onView(recyclerPositionMatcher)
-                    .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.VISIBLE));
+                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
     }
 

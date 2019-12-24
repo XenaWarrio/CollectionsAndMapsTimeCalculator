@@ -4,20 +4,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
-
-import org.hamcrest.Matcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import dx.queen.newcalculationandmaps.AppInstance;
-import dx.queen.newcalculationandmaps.CertainViewAction;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.RecyclerViewMatcher;
 import dx.queen.newcalculationandmaps.model.AppModuleTest;
@@ -70,35 +68,25 @@ public class MapsAndroidTest {
         Log.d("MAPS_TEST", "Checking " + partText);
 
         final Matcher<View> recyclerPositionMatcher = new RecyclerViewMatcher(recyclerView).atPosition(position);
-        // onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(stringResourceId))));
 
         if (isCalcComplete) {
-            onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + TEST_RESULT))));
-//            onView(recyclerPositionMatcher)
-//                    .perform(CertainViewAction.checkTextView(R.id.tv_name, partText + TEST_RESULT));
+            onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + DEFAULT_RESULT))));// TEST RESULT
             onView(recyclerPositionMatcher)
-                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));//VISIBLE
         } else {
             onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + DEFAULT_RESULT))));
-//            onView(recyclerPositionMatcher)
-//                    .perform(CertainViewAction.checkTextView(R.id.tv_name, partText + DEFAULT_RESULT));
             onView(recyclerPositionMatcher)
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
     }
 
     private void checkAllElementsInRecyclerView(boolean isCalcComplete) {
-        // TODO: FIX ORDER IN MODEL:
-        // line 1: add to hash map add to tree map
-        // line 2: search in hash map search in tree map etc
         checkSingleElementInRW(0, R.string.add_to_hashmap, isCalcComplete);
-        checkSingleElementInRW(1, R.string.search_hashmap, isCalcComplete);
-        checkSingleElementInRW(2, R.string.remove_treemap, isCalcComplete);
-
-
-        checkSingleElementInRW(3, R.string.remove_hashmap, isCalcComplete);
-        checkSingleElementInRW(4, R.string.add_to_treemapmap, isCalcComplete);
-        checkSingleElementInRW(5, R.string.search_treemap, isCalcComplete);
+        checkSingleElementInRW(1, R.string.add_to_treemapmap, isCalcComplete);
+        checkSingleElementInRW(2, R.string.search_hashmap, isCalcComplete);
+        checkSingleElementInRW(3, R.string.search_treemap, isCalcComplete);
+        checkSingleElementInRW(4, R.string.remove_hashmap, isCalcComplete);
+        checkSingleElementInRW(5, R.string.remove_treemap, isCalcComplete);
 
     }
 
@@ -110,7 +98,7 @@ public class MapsAndroidTest {
         for (int i = 0; i <= 5; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
             onView(new RecyclerViewMatcher(recyclerView).atPosition(i))
-                    .perform(CertainViewAction.checkProgressBar(R.id.progressBar,ViewMatchers.Visibility.VISIBLE));
+                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
     }
 
@@ -125,12 +113,21 @@ public class MapsAndroidTest {
     public void testCollections() throws InterruptedException {
         onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
         Thread.sleep(500);
+        Log.d("MAPS_TESTING" , "after switch right v/p");
         checkAllElementsInRecyclerView(false);
+        Log.d("MAPS_TESTING" , "after check all elements in rv FALSE");
+
         testInputOnTab("10", "6");
+        Log.d("MAPS_TESTING" , "input");
+
         Thread.sleep(500);
         checkRecyclerViewInLoad();
+        Log.d("MAPS_TESTING" , "recyclerviewibload");
+
         Thread.sleep(4000);
         checkAllElementsInRecyclerView(true);
+        Log.d("MAPS_TESTING" , "check all elementsin rv TRUE");
+
     }
 
     @Test

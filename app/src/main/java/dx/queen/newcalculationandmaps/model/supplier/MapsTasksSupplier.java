@@ -21,11 +21,14 @@ public class MapsTasksSupplier implements TaskSupplier {
     public List<TaskData> getTasks() {
         final List<TaskData> tasks = new ArrayList<>(6);
         tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.add_to_hashmap));
-        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.remove_hashmap));
-        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.search_hashmap));
         tasks.add(new MapTaskData(new TreeMap<Integer, Integer>(), R.string.add_to_treemapmap));
-        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.remove_treemap));
+
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.search_hashmap));
         tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.search_treemap));
+
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.remove_hashmap));
+        tasks.add(new MapTaskData(new HashMap<Integer, Integer>(), R.string.remove_treemap));
+
         return tasks;
     }
 

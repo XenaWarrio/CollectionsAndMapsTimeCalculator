@@ -1,5 +1,6 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
+import android.util.Log;
 import android.view.View;
 
 import org.hamcrest.Matcher;
@@ -47,36 +48,46 @@ public class MapsAndroidTest {
         }
     };
     private final int FRAGMENT_ID = 1;
-    private final String TEST_RESULT = "3.0ms";
-    private final String DEFAULT_RESULT = "0.0ms";
+    private final String TEST_RESULT = "3.0 ms";
+    private final String DEFAULT_RESULT = "0.0 ms";
+
     private RecyclerView recyclerView;
     private ViewPager viewPager;
 
+
     private void checkSingleElementInRW(int position, int stringResourceId, boolean isCalcComplete) {
-        Matcher<View> recyclerAtPosition = new RecyclerViewMatcher(R.id.recycler).atPosition(position);
+        final String partText = mainActivityActivityTestRule.getActivity().getString(stringResourceId);
+
+        Log.d("MAPS_TEST", "Checking " + partText);
 
         if (recyclerView == null) {
             viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
             recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
-            onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
-            onView(recyclerAtPosition)
-                    .check(matches(hasDescendant(withText(stringResourceId))));
         }
+        onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
+
+        final Matcher<View> recyclerPositionMatcher = new RecyclerViewMatcher(recyclerView).atPosition(position);
+        // onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(stringResourceId))));
 
         if (isCalcComplete) {
-            onView(recyclerAtPosition)
-                    .perform(CertainViewAction.checkTextView(stringResourceId, TEST_RESULT));
-            onView(recyclerAtPosition)
+            onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + TEST_RESULT))));
+//            onView(recyclerPositionMatcher)
+//                    .perform(CertainViewAction.checkTextView(R.id.tv_name, partText + TEST_RESULT));
+            onView(recyclerPositionMatcher)
                     .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.INVISIBLE));
         } else {
-            onView(recyclerAtPosition)
-                    .perform(CertainViewAction.checkTextView(stringResourceId, DEFAULT_RESULT));
-            onView(recyclerAtPosition)
+            onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + DEFAULT_RESULT))));
+//            onView(recyclerPositionMatcher)
+//                    .perform(CertainViewAction.checkTextView(R.id.tv_name, partText + DEFAULT_RESULT));
+            onView(recyclerPositionMatcher)
                     .perform(CertainViewAction.checkProgressBar(R.id.progressBar, ViewMatchers.Visibility.VISIBLE));
         }
     }
 
     private void checkAllElementsInRecyclerView(boolean isCalcComplete) {
+        // TODO: FIX ORDER IN MODEL:
+        // line 1: add to hash map add to tree map
+        // line 2: search in hash map search in tree map etc
         checkSingleElementInRW(0, R.string.add_to_hashmap, isCalcComplete);
         checkSingleElementInRW(1, R.string.search_hashmap, isCalcComplete);
         checkSingleElementInRW(2, R.string.remove_treemap, isCalcComplete);
@@ -95,7 +106,7 @@ public class MapsAndroidTest {
         }
         for (int i = 0; i <= 5; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
-            onView(new RecyclerViewMatcher(R.id.recycler).atPosition(i))
+            onView(new RecyclerViewMatcher(recyclerView).atPosition(i))
                     .perform(CertainViewAction.checkProgressBar(R.id.progressBar,ViewMatchers.Visibility.VISIBLE));
         }
     }

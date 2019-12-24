@@ -58,11 +58,12 @@ public class CollectionsAndroidTest {
     };
 
     private void checkSingleElementInRW(int position, int stringResourceId, boolean isCalcComplete) {
-        Matcher<View> recyclerAtPosition = new RecyclerViewMatcher(R.id.recycler).atPosition(position);
+        Matcher<View> recyclerAtPosition = new RecyclerViewMatcher(recyclerView).atPosition(position); // TODO FIX NPE LATER
 
         if (recyclerView == null) {
             viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
             recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
+            // TODO: FIX THIS STUPID BUG!
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
             onView(recyclerAtPosition)
                     .check(matches(hasDescendant(withText(stringResourceId))));
@@ -109,7 +110,7 @@ public class CollectionsAndroidTest {
         recyclerView =  viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);}
         for (int i = 0; i <= 5; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
-            onView(new RecyclerViewMatcher(R.id.recycler).atPosition(i))
+            onView(new RecyclerViewMatcher(recyclerView).atPosition(i))
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         }
     }

@@ -10,12 +10,13 @@ import org.hamcrest.TypeSafeMatcher;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewMatcher {
-    private final int recyclerViewId;
+    private final RecyclerView recyclerView;
 
 
-    public RecyclerViewMatcher(int recyclerViewId) {
-        this.recyclerViewId = recyclerViewId;
+    public RecyclerViewMatcher(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
     }
+
 
     public Matcher<View> atPosition(final int position) {
         return atPositionOnView(position, -1);
@@ -28,18 +29,18 @@ public class RecyclerViewMatcher {
             View childView;
 
             public void describeTo(Description description) {
-                String idDescription = Integer.toString(recyclerViewId);
-                if (this.resources != null) {
-                    try {
-                        idDescription = this.resources.getResourceName(recyclerViewId);
-                    } catch (Resources.NotFoundException var4) {
-                        idDescription = String.format("%s (resource name not found)",
-                                new Object[] { Integer.valueOf
-                                        (recyclerViewId) });
-                    }
-                }
-
-                description.appendText("with id: " + idDescription);
+//                String idDescription = Integer.toString(recyclerViewId);
+//                if (this.resources != null) {
+//                    try {
+//                        idDescription = this.resources.getResourceName(recyclerViewId);
+//                    } catch (Resources.NotFoundException var4) {
+//                        idDescription = String.format("%s (resource name not found)",
+//                                new Object[] { recyclerView });
+//                    }
+//                }
+//
+//                description.appendText("with id: " + idDescription);
+                description.appendText("FUCK_UP!"); // TODO: fix later
             }
 
             public boolean matchesSafely(View view) {
@@ -47,9 +48,7 @@ public class RecyclerViewMatcher {
                 this.resources = view.getResources();
 
                 if (childView == null) {
-                    RecyclerView recyclerView =
-                            (RecyclerView) view.getRootView().findViewById(recyclerViewId);
-                    if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
+                    if (recyclerView != null) {
                         childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
                     }
                     else {
@@ -57,13 +56,7 @@ public class RecyclerViewMatcher {
                     }
                 }
 
-                if (targetViewId == -1) {
-                    return view == childView;
-                } else {
-                    View targetView = childView.findViewById(targetViewId);
-                    return view == targetView;
-                }
-
+                return view == (targetViewId == -1 ? childView : childView.findViewById(targetViewId));
             }
         };
     }

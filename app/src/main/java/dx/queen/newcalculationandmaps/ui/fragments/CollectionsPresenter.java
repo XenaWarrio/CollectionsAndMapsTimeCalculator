@@ -61,43 +61,54 @@ public class CollectionsPresenter extends AbstractPresenter<CollectionFragmentCo
             view.setElementsError(null);
         }
 
-        if (!flag) return;
+        if (!flag) {
+            return;
+        }
 
-        final int threadsInt = Integer.parseInt(threads);// НУ ПОЧЕМУ??
-        final int elementsInt = Integer.parseInt(elements);// может экстрасенсы знают ответ...
+        final int threadsInt = Integer.parseInt(threads);
+        final int elementsInt = Integer.parseInt(elements);
         final Scheduler schedulers = Schedulers.from(Executors.newFixedThreadPool(threadsInt));
 
         stopCalculation(false);
 
         compositeDisposable.add(Observable.fromIterable(tasksSupplier.getTasks())
                 .doOnSubscribe(v -> {
-                    if (view != null) view.showProgress(true);
+                    if (view != null) {
+                        view.showProgress(true);
+                    }
                 })
-                .doFinally(() -> stopCalculation(true))
-                .map(taskData -> {
-                    taskData.fill(elementsInt);
-                    calculator.execAndSetupTime(taskData);
-                    return taskData.getResult();
+                .flatMap(task -> Observable.just(task)
+                        .map(task1 -> {
+                            task1.fill(elementsInt);
+                            calculator.execAndSetupTime(task1);
+                            return task1.getResult();
+                        })
+                        .subscribeOn(schedulers)
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .doFinally(() -> {
+                    if (view != null) {
+                        stopCalculation(true);
+                    }
                 })
-                .observeOn(schedulers)
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(calculationResult -> {
-                    if (view != null) view.setupResult(calculationResult);
+                    if (view != null) {
+                        view.setupResult(calculationResult);
+                    }
                 }));
-
-        view.btnToStart();
     }
 
 
     @Override
     public void stopCalculation(boolean showMsg) {
-        if (compositeDisposable.size() == 0) return;
+        if (compositeDisposable.size() == 0) {
+            return;
+        }
         compositeDisposable.clear();
-
-        if (view == null) return;
+        if (view == null) {
+            return;
+        }
 
         view.showProgress(false);
-
         view.calculationStopped();
 
         if (showMsg) {

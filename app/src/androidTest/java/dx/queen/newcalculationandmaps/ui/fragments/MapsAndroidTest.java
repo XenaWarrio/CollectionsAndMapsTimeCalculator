@@ -4,17 +4,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import org.hamcrest.Matcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
+
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.RecyclerViewMatcher;
@@ -59,7 +60,8 @@ public class MapsAndroidTest {
 
 
     private void checkSingleElementInRW(int position, int stringResourceId, boolean isCalcComplete) {
-        final String partText = mainActivityActivityTestRule.getActivity().getString(stringResourceId);
+        final String partText = mainActivityActivityTestRule.getActivity().getString(stringResourceId)
+                + (isCalcComplete ? TEST_RESULT : DEFAULT_RESULT);
         if (recyclerView == null) {
             viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
             recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
@@ -69,12 +71,11 @@ public class MapsAndroidTest {
 
         final Matcher<View> recyclerPositionMatcher = new RecyclerViewMatcher(recyclerView).atPosition(position);
 
+        onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText))));
         if (isCalcComplete) {
-            onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + DEFAULT_RESULT))));// TEST RESULT
             onView(recyclerPositionMatcher)
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));//VISIBLE
         } else {
-            onView(recyclerPositionMatcher).check(matches(hasDescendant(withText(partText + DEFAULT_RESULT))));
             onView(recyclerPositionMatcher)
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
@@ -87,7 +88,6 @@ public class MapsAndroidTest {
         checkSingleElementInRW(3, R.string.search_treemap, isCalcComplete);
         checkSingleElementInRW(4, R.string.remove_hashmap, isCalcComplete);
         checkSingleElementInRW(5, R.string.remove_treemap, isCalcComplete);
-
     }
 
     private void checkRecyclerViewInLoad() {
@@ -98,7 +98,7 @@ public class MapsAndroidTest {
         for (int i = 0; i <= 5; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
             onView(new RecyclerViewMatcher(recyclerView).atPosition(i))
-                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
+                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         }
     }
 
@@ -113,21 +113,12 @@ public class MapsAndroidTest {
     public void testCollections() throws InterruptedException {
         onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
         Thread.sleep(500);
-        Log.d("MAPS_TESTING" , "after switch right v/p");
         checkAllElementsInRecyclerView(false);
-        Log.d("MAPS_TESTING" , "after check all elements in rv FALSE");
-
-        testInputOnTab("10", "6");
-        Log.d("MAPS_TESTING" , "input");
-
-        Thread.sleep(500);
+        testInputOnTab("1000000", "3");
+        Thread.sleep(100);
         checkRecyclerViewInLoad();
-        Log.d("MAPS_TESTING" , "recyclerviewibload");
-
-        Thread.sleep(4000);
+        Thread.sleep(1500);
         checkAllElementsInRecyclerView(true);
-        Log.d("MAPS_TESTING" , "check all elementsin rv TRUE");
-
     }
 
     @Test

@@ -143,14 +143,12 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void showProgress(boolean mode) {
         adapter.showProgress(mode);
-
     }
 
 
     @Override
     public void calculationStopped() {
         start.setChecked(false);
-
     }
 
     @Override

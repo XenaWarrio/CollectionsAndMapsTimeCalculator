@@ -4,18 +4,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
-
-import org.hamcrest.Matcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.RecyclerViewMatcher;
@@ -41,7 +40,6 @@ import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class MapsAndroidTest {
-
     @Rule
     public final ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class) {
         @Override
@@ -51,13 +49,14 @@ public class MapsAndroidTest {
             AppInstance.getInstance().setAppComponent(DaggerAppComponent.builder().appModule(new AppModuleTest(app)).build());
         }
     };
+
     private final int FRAGMENT_ID = 1;
+
     private final String TEST_RESULT = "3.0 ms";
     private final String DEFAULT_RESULT = "0.0 ms";
 
     private RecyclerView recyclerView;
     private ViewPager viewPager;
-
 
     private void checkSingleElementInRW(int position, int stringResourceId, boolean isCalcComplete) {
         final String partText = mainActivityActivityTestRule.getActivity().getString(stringResourceId)

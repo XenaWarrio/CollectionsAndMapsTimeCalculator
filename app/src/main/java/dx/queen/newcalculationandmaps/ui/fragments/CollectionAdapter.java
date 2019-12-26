@@ -58,6 +58,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             if (items.get(i).labelResId == result.labelResId) {
                 items.set(i, result);
                 notifyItemChanged(i);
+                Log.d("POSITION", "Item upd " + i);
                 break;
             }
         }

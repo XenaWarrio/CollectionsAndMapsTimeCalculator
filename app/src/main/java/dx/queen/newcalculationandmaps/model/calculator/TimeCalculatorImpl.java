@@ -18,27 +18,27 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.add_to_start_array_list:
             case R.string.add_to_start_linked_list:
                 add(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
             case R.string.add_to_middle_caw:
             case R.string.add_to_middle_linked_list:
             case R.string.add_to_middle_array_list:
                 addiMiddle(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.add_to_end_caw:
             case R.string.add_to_end_linked_list:
             case R.string.add_to_end_array_list:
                 addEnd(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.remove_start_caw:
             case R.string.remove_start_linked_list:
             case R.string.remove_start_array_list:
                 removeStart(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
 
@@ -47,7 +47,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.remove_middle_array_list:
 
                 removeMiddle(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.remove_end_caw:
@@ -55,7 +55,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.remove_end_array_list:
 
                 removeEndList(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.search_caw:
@@ -77,16 +77,21 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.remove_hashmap:
 
                 removeMap(td.getMap());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.search_treemap:
             case R.string.search_hashmap:
 
                 searchMap(td.getMap());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
         }
+    }
+
+    private void setupTime(TaskData td, long start) {
+        final long time = System.nanoTime() - start;
+        td.setTime(time / 1_000_000D);
     }
 
     private synchronized void add(List<Integer> list) {

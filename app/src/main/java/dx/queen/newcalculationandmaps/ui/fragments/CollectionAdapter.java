@@ -1,17 +1,17 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.dto.CalculationResult;
 

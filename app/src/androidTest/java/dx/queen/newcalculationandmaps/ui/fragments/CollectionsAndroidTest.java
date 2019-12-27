@@ -1,5 +1,6 @@
 package dx.queen.newcalculationandmaps.ui.fragments;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class CollectionsAndroidTest {
 
+
     @Rule
     public final ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class) {
         @Override
@@ -51,8 +53,8 @@ public class CollectionsAndroidTest {
     };
     private final int FRAGMENT_ID = 0;
 
-    private final String TEST_RESULT = "3.0ms";
-    private final String DEFAULT_RESULT = "0.0ms";
+    private final String TEST_RESULT = "3.0 ms";
+    private final String DEFAULT_RESULT = "0.0 ms";
 
     private RecyclerView recyclerView;
     private ViewPager viewPager;
@@ -68,6 +70,8 @@ public class CollectionsAndroidTest {
         }
 
         onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(position));
+        Log.d("Collection_TEST", "Checking " + partText);
+
 
         final Matcher<View> recyclerPositionMatcher = new RecyclerViewMatcher(recyclerView).atPosition(position);
 
@@ -111,10 +115,12 @@ public class CollectionsAndroidTest {
             viewPager = mainActivityActivityTestRule.getActivity().findViewById(R.id.view_pager);
             recyclerView = viewPager.getChildAt(FRAGMENT_ID).findViewById(R.id.recycler);
         }
-        for (int i = 0; i <= 5; i++) {
+        final RecyclerViewMatcher recyclerViewMatcher = new RecyclerViewMatcher(recyclerView);
+        for (int i = 0; i <= 20; i++) {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
-            onView(new RecyclerViewMatcher(recyclerView).atPosition(i))
-                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(recyclerViewMatcher.atPosition(i))
+                    .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class),
+                            withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
     }
 
@@ -125,22 +131,22 @@ public class CollectionsAndroidTest {
         onView(allOf(withId(R.id.bt_start), isDisplayed())).perform(click());
     }
 
+
     @Test
     public void testCollections() throws InterruptedException {
-        onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());// swiperight
-        Thread.sleep(500);
+        onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());// swiperight
+        Thread.sleep(200);
         checkAllElementsInRecyclerView(false);
-        testInputOnTab("100000", "6");
-        Thread.sleep(500);
+        testInputOnTab("10", "1");
         checkRecyclerViewInLoad();
-        Thread.sleep(4000);
+        Thread.sleep(10_00);
         checkAllElementsInRecyclerView(true);
     }
 
 
     @Test
     public void testInputElementsEmptyError() throws InterruptedException {
-        onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
+        onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());
         Thread.sleep(500);
         testInputOnTab(" ", "6");
         Thread.sleep(200);
@@ -149,7 +155,7 @@ public class CollectionsAndroidTest {
 
     @Test
     public void testInputElementsTooLittleError() throws InterruptedException {
-        onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
+        onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());
         Thread.sleep(500);
         testInputOnTab("0", "6");
         Thread.sleep(200);
@@ -158,16 +164,17 @@ public class CollectionsAndroidTest {
 
     @Test
     public void testInputThreadsEmptyError() throws InterruptedException {
-        onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
+        onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());
         Thread.sleep(500);
         testInputOnTab("100000", " ");
         Thread.sleep(200);
         onView(allOf(withId(R.id.et_threads), isDisplayed())).check(matches(hasErrorText(mainActivityActivityTestRule.getActivity().getString(R.string.threads_empty))));
     }
 
+
     @Test
     public void testInputThreadsTooLittleError() throws InterruptedException {
-        onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
+        onView(withId(R.id.view_pager)).perform(ViewActions.swipeRight());
         Thread.sleep(500);
         testInputOnTab("100000", "0");
         Thread.sleep(200);

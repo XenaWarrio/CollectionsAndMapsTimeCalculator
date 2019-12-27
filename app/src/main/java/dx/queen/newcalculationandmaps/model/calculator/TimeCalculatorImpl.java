@@ -63,14 +63,14 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.search_array:
 
                 searchElement(td.getList());
-                td.setTime(System.nanoTime() - start / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.add_to_treemapmap:
             case R.string.add_to_hashmap:
 
                 addMap(td.getMap());
-                td.setTime((System.nanoTime() - start / 1_000_000D));
+                setupTime(td, start);
                 break;
 
             case R.string.remove_treemap:

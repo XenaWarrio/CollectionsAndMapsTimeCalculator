@@ -4,18 +4,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
-
-import org.hamcrest.Matcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.R;
 import dx.queen.newcalculationandmaps.RecyclerViewMatcher;
@@ -100,7 +99,7 @@ public class MapsAndroidTest {
             onView(allOf(withId(R.id.recycler), isDisplayed())).perform(scrollToPosition(i));
             onView(recyclerViewMatcher.atPosition(i))
                     .check(selectedDescendantsMatch(isAssignableFrom(ProgressBar.class),
-                            withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+                            withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         }
     }
 
@@ -114,12 +113,12 @@ public class MapsAndroidTest {
     @Test
     public void testCollections() throws InterruptedException {
         onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft());
-        Thread.sleep(500);
+        Thread.sleep(200);
         checkAllElementsInRecyclerView(false);
-        testInputOnTab("10000000", "1");
-        // Thread.sleep(10);
+        testInputOnTab("10", "1");
+         //Thread.sleep(10);
         checkRecyclerViewInLoad();
-        Thread.sleep(30_000); // 30 sec
+        Thread.sleep(10_00); // 30 sec
         checkAllElementsInRecyclerView(true);
     }
 

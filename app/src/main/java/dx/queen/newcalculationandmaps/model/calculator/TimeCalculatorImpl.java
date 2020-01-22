@@ -14,33 +14,31 @@ public class TimeCalculatorImpl implements TimeCalculator {
 
         final long start = System.nanoTime();
         switch (td.getLabelResId()) {
-            // unite cases by action
             case R.string.add_to_start_caw:
             case R.string.add_to_start_array_list:
             case R.string.add_to_start_linked_list:
                 add(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
             case R.string.add_to_middle_caw:
             case R.string.add_to_middle_linked_list:
             case R.string.add_to_middle_array_list:
                 addiMiddle(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.add_to_end_caw:
             case R.string.add_to_end_linked_list:
             case R.string.add_to_end_array_list:
                 addEnd(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
-
 
             case R.string.remove_start_caw:
             case R.string.remove_start_linked_list:
             case R.string.remove_start_array_list:
                 removeStart(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
 
@@ -48,56 +46,52 @@ public class TimeCalculatorImpl implements TimeCalculator {
             case R.string.remove_middle_linked_list:
             case R.string.remove_middle_array_list:
 
-
                 removeMiddle(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
 
             case R.string.remove_end_caw:
             case R.string.remove_end_linked_list:
             case R.string.remove_end_array_list:
 
-
                 removeEndList(td.getList());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
-
 
             case R.string.search_caw:
             case R.string.search_linked:
             case R.string.search_array:
 
-
                 searchElement(td.getList());
-                td.setTime(System.nanoTime() - start / 1_000_000D);
+                setupTime(td, start);
                 break;
-
 
             case R.string.add_to_treemapmap:
             case R.string.add_to_hashmap:
 
                 addMap(td.getMap());
-                td.setTime((System.nanoTime() - start / 1_000_000D));
+                setupTime(td, start);
                 break;
-
 
             case R.string.remove_treemap:
             case R.string.remove_hashmap:
 
                 removeMap(td.getMap());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
-
 
             case R.string.search_treemap:
             case R.string.search_hashmap:
 
                 searchMap(td.getMap());
-                td.setTime((System.nanoTime() - start) / 1_000_000D);
+                setupTime(td, start);
                 break;
-
-
         }
+    }
+
+    private void setupTime(TaskData td, long start) {
+        final long time = System.nanoTime() - start;
+        td.setTime(time / 1_000_000D);
     }
 
     private synchronized void add(List<Integer> list) {
@@ -125,7 +119,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void searchElement(List<Integer> list) {
-       list.get((list.size()/2));
+        list.get((list.size() / 2));
 
     }
 
@@ -135,7 +129,7 @@ public class TimeCalculatorImpl implements TimeCalculator {
     }
 
     private synchronized void searchMap(Map<Integer, Integer> map) {
-        map.get(map.size()/2);
+        map.get(map.size() / 2);
     }
 
 

@@ -2,6 +2,7 @@ package dx.queen.newcalculationandmaps.ui.fragments;
 
 import dagger.Module;
 import dagger.Provides;
+import dx.queen.newcalculationandmaps.AppInstance;
 import dx.queen.newcalculationandmaps.dto.Modes;
 import dx.queen.newcalculationandmaps.model.AppComponent;
 
@@ -14,8 +15,8 @@ public class FragmentModule {
     }
 
     @Provides
-     CollectionFragmentContract.Presenter providePresenter() {
+    CollectionFragmentContract.Presenter providePresenter() {
         final AppComponent component = AppInstance.getInstance().getAppComponent();
-        return new CollectionsPresenter(mode.equals(Modes.MAPS ) ? component.injectMapsTaskSupplier(): component.injectColletionsTaskSupplier() , component.provideCalculator());
+        return new CollectionsPresenter(mode.equals(Modes.MAPS) ? component.injectMapsTaskSupplier() : component.injectColletionsTaskSupplier(), component.provideCalculator());
     }
 }

@@ -12,7 +12,6 @@ public class ListTaskData extends AbstractTaskData {
     }
 
 
-
     public void fill(int elements) {
         collection.addAll(Collections.nCopies(elements, 1));
     }

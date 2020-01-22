@@ -11,16 +11,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.util.List;
-import java.util.Objects;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -50,8 +51,6 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
 
     @Inject
     CollectionFragmentContract.Presenter presenter;
-
-
 
 
     public static CollectionsFragment newInstance(String mode) {
@@ -132,6 +131,11 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     }
 
     @Override
+    public List<CalculationResult> getItems() {
+        return adapter.getItems();
+    }
+
+    @Override
     public void setupResult(CalculationResult result) {
         handler.post(() -> adapter.updateItem(result)); // multithreading!!
     }
@@ -139,13 +143,12 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     @Override
     public void showProgress(boolean mode) {
         adapter.showProgress(mode);
-
     }
+
 
     @Override
     public void calculationStopped() {
         start.setChecked(false);
-
     }
 
     @Override
@@ -154,7 +157,7 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
     }
 
     @Override
-    public void setElemntsError(String error) {
+    public void setElementsError(String error) {
 
         countOfElement.setError(error);
     }
@@ -169,30 +172,8 @@ public class CollectionsFragment extends Fragment implements CollectionFragmentC
         return Objects.requireNonNull(getContext()).getString(strResId);
     }
 
-//
-//       @Override
-//   public void onStart() {
-//        super.onStart();
-//        presenter.subscribe(this);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        presenter.unsubscribe();
-//        super.onStop();
-//    }
-////
-//    @Override
-//    public void onDestroy() {
-//        presenter.unsubscribe();
-//        super.onDestroy();
-//    }
-
     @Override
     public void showToast(int msgResId) {
         Toast.makeText(getActivity(), msgResId, Toast.LENGTH_LONG).show();
     }
-
-
-
 }

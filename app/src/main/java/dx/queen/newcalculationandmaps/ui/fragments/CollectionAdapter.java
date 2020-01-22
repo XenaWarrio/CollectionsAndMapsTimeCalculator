@@ -42,11 +42,13 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         notifyDataSetChanged();
     }
 
+    List<CalculationResult> getItems() {
+        return items;
+    }
+
     void showProgress(boolean mode) {
         for (int i = 0; i < items.size(); i++) {
             items.get(i).setShowProgress(mode);
-            Log.d("Erroro", "in collection adapter " + items.get(i).isShowProgress());
-
         }
         notifyDataSetChanged();
     }
@@ -56,6 +58,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             if (items.get(i).labelResId == result.labelResId) {
                 items.set(i, result);
                 notifyItemChanged(i);
+                Log.d("POSITION", "Item upd " + i);
                 break;
             }
         }
@@ -64,27 +67,17 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     class ViewHolderTime extends RecyclerView.ViewHolder {
         private final ProgressBar progressBar;
         private final TextView nameAndTime;
-        View v;
 
         ViewHolderTime(@NonNull View itemView) {
             super(itemView);
             nameAndTime = itemView.findViewById(R.id.tv_name);
             progressBar = itemView.findViewById(R.id.progressBar);
-            this.v = itemView;
         }
 
         void bind(CalculationResult item) {
-            Log.d("Erroro", "bind" + item.isShowProgress());
-
             final String s = nameAndTime.getContext().getString(item.getRes()) + (item.isTimeDefault() ? "-:-" : (item.time + " ms"));
             nameAndTime.setText(s);
-            if (item.isShowProgress()){
-                progressBar.setVisibility(View.VISIBLE);
-            }else {
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            //progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.INVISIBLE);
+            progressBar.setVisibility(item.isShowProgress() ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }
-//сли этот код работает , то его писала ксюша, если нет , то не знаю , кто писал

@@ -5,12 +5,12 @@ public class CalculationResult {
     public final double time;
     private boolean showProgress = false;
 
-    public CalculationResult(int labelResId,  double time) {
+    public CalculationResult(int labelResId, double time) {
         this.labelResId = labelResId;
         this.time = time;
     }
 
-   public boolean isTimeDefault() {
+    public boolean isTimeDefault() {
         return -1 == time;
     }
 
